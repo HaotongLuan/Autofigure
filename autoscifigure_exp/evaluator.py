@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import random
 import re
 import sys
@@ -314,8 +315,9 @@ class _ClaudeClient:
     def __init__(
         self,
         api_key: Optional[str] = None,
-        model: str = "claude-sonnet-4-6",
+        model: str = "DeepSeek-V4-pro",
         max_retries: int = MAX_RETRIES,
+        base_url: Optional[str] = None,
     ):
         if anthropic is None or Anthropic is None:
             raise ImportError(
@@ -332,7 +334,11 @@ class _ClaudeClient:
             # Let the SDK handle its default resolution (env, config, etc.)
             resolved_key = None
 
-        self._client = Anthropic(api_key=resolved_key)
+        resolved_base = base_url or os.environ.get("ANTHROPIC_BASE_URL", None)
+        client_kwargs = {"api_key": resolved_key}
+        if resolved_base:
+            client_kwargs["base_url"] = resolved_base
+        self._client = Anthropic(**client_kwargs)
 
     def send_message(
         self,
@@ -414,16 +420,18 @@ class FigureEvaluator:
     def __init__(
         self,
         api_key: Optional[str] = None,
-        model: str = "claude-sonnet-4-6",
+        model: str = "DeepSeek-V4-pro",
+        base_url: Optional[str] = None,
     ):
         """Initialize the evaluator with an Anthropic API key.
 
         Args:
             api_key: Anthropic API key. If None, uses the ANTHROPIC_API_KEY
                 environment variable or the SDK default resolution.
-            model: Claude model identifier. Default: "claude-sonnet-4-6".
+            model: Model identifier. Default: "DeepSeek-V4-pro".
+            base_url: Optional custom API base URL.
         """
-        self._client = _ClaudeClient(api_key=api_key, model=model)
+        self._client = _ClaudeClient(api_key=api_key, model=model, base_url=base_url)
         self._model = model
 
     # ------------------------------------------------------------------

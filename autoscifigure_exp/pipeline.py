@@ -242,7 +242,8 @@ class SciFigurePipeline:
     def __init__(
         self,
         api_key: Optional[str] = None,
-        model: str = "claude-sonnet-4-6",
+        model: str = "DeepSeek-V4-pro",
+        base_url: Optional[str] = None,
     ):
         resolved_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
         if not resolved_key:
@@ -252,7 +253,11 @@ class SciFigurePipeline:
             )
         self.api_key = resolved_key
         self.model = model
-        self.client = anthropic.Anthropic(api_key=self.api_key)
+        resolved_base = base_url or os.environ.get("ANTHROPIC_BASE_URL", None)
+        client_kwargs = {"api_key": self.api_key}
+        if resolved_base:
+            client_kwargs["base_url"] = resolved_base
+        self.client = anthropic.Anthropic(**client_kwargs)
         self.renderer = SVGRenderer()
 
     # ------------------------------------------------------------------
