@@ -326,218 +326,344 @@ AutoSciFigure (2026) ─── 三大锚点论文 ───┐
 <!-- ===== 9. REFERENCES ===== -->
 <h2>9. 全部论文关键点汇总</h2>
 
-<p style="color:#666; font-size:0.88em; margin-bottom:20px;">共收录 <strong>42</strong> 篇论文/系统, 按研究分支分类, 每篇标注核心贡献。</p>
+<p style="color:#666; font-size:0.88em; margin-bottom:20px;">共收录 <strong>42</strong> 篇论文/系统, 按研究分支分类, 每篇附全名、作者、链接与核心贡献。</p>
 
 <h3>9.1 锚点论文 (3篇)</h3>
 <table>
-  <tr><th width="30">#</th><th width="200">论文</th><th width="95">发表</th><th>关键贡献</th></tr>
+  <tr><th width="30">#</th><th>论文全名</th><th width="100">发表</th><th>关键贡献</th><th width="105">链接</th></tr>
   <tr>
-    <td>1</td><td><strong>PaperBanana</strong></td><td>arXiv Jan 2026</td>
+    <td>1</td>
+    <td><strong>PaperBanana: A Multi-Agent Framework for Automated Scientific Figure Generation</strong><br><span style="font-size:0.85em;color:#666;">Zhu et al. (PKU × Google Cloud AI Research)</span></td>
+    <td>arXiv Jan 2026</td>
     <td>5-Agent 协同框架 (Retriever→Planner→Stylist→Visualizer⇄Critic); 检索增强科学忠实度; PaperBananaBench (292 NeurIPS 方法论图); 人类偏好 72.7% 胜率; Gemini-3-Pro 驱动</td>
+    <td><a href="https://arxiv.org/abs/2601.23265">arXiv 2601.23265</a></td>
   </tr>
   <tr>
-    <td>2</td><td><strong>AutoFigure</strong></td><td><span class="tag green">ICLR 2026</span></td>
+    <td>2</td>
+    <td><strong>AutoFigure: Automated Scientific Figure Generation through Review-and-Refine</strong><br><span style="font-size:0.85em;color:#666;">Zhu, Lin et al. (Westlake University)</span></td>
+    <td><span class="tag green">ICLR 2026</span></td>
     <td>Review-Refine 双 Agent 迭代 (0-10分评分循环); <strong>可编辑 SVG / mxGraph XML 输出</strong>; FigureBench (3,300 长文本-图对); 教科书级插图 97.5% 胜率; 本地免费部署 (~9min/图)</td>
+    <td><a href="https://arxiv.org/abs/2602.03828">arXiv 2602.03828</a></td>
   </tr>
   <tr>
-    <td>3</td><td><strong>LottieGPT</strong></td><td><span class="tag">CVPR 2026</span></td>
+    <td>3</td>
+    <td><strong>LottieGPT: Autoregressive Generation of Vector Animation with Content-Semantic Tokenization</strong><br><span style="font-size:0.85em;color:#666;">Chen et al. (Tsinghua University × BAAI × PolyU)</span></td>
+    <td><span class="tag">CVPR 2026</span></td>
     <td>首个科学动画自回归生成模型; Lottie JSON token 化 + Qwen-VL 解码; 静态 SVG SOTA; 序列压缩 34%; 660K 动画 + 15M 静态矢量训练数据</td>
+    <td><a href="https://arxiv.org/abs/2604.11792">arXiv 2604.11792</a></td>
   </tr>
 </table>
 
 <h3>9.2 直接延续工作 (4篇)</h3>
 <table>
-  <tr><th width="30">#</th><th width="200">论文</th><th width="95">发表</th><th>关键贡献</th></tr>
+  <tr><th width="30">#</th><th>论文全名</th><th width="100">发表</th><th>关键贡献</th><th width="105">链接</th></tr>
   <tr>
-    <td>4</td><td><strong>AutoFigure-Edit</strong></td><td>arXiv Mar 2026</td>
+    <td>4</td>
+    <td><strong>AutoFigure-Edit: Towards Editable Scientific Figures via Semantic Segmentation and Natural Language Instructions</strong><br><span style="font-size:0.85em;color:#666;">Lin et al. (Westlake University)</span></td>
+    <td>arXiv Mar 2026</td>
     <td>SAM3 语义分割定位图中元素; 自然语言指令局部修改 SVG (改颜色/换位置/替换模块); 避免重新生成整张图; 首个可编辑科学插图 agent</td>
+    <td><a href="https://arxiv.org/abs/2603.06674">arXiv 2603.06674</a></td>
   </tr>
   <tr>
-    <td>5</td><td><strong>FigAgent</strong></td><td>arXiv Feb 2026</td>
+    <td>5</td>
+    <td><strong>FigAgent: Explore-and-Select Drawing Strategy for Scientific Figure Generation</strong><br><span style="font-size:0.85em;color:#666;">Li et al.</span></td>
+    <td>arXiv Feb 2026</td>
     <td>Explore-and-Select 试错绘制策略; 多轮迭代自评估; 强化学习优化绘图动作序列; 探索-利用平衡</td>
+    <td><a href="https://arxiv.org/abs/2603.29590">arXiv 2603.29590</a></td>
   </tr>
   <tr>
-    <td>6</td><td><strong>SciFig</strong></td><td>arXiv Jan 2026</td>
+    <td>6</td>
+    <td><strong>SciFig: Hierarchical Layout Planning with Chain-of-Thought Iterative Feedback for Scientific Figure Generation</strong><br><span style="font-size:0.85em;color:#666;">Huang et al.</span></td>
+    <td>arXiv Jan 2026</td>
     <td>层级布局规划 + Chain-of-Thought 迭代反馈; 质量得分 70.1%; 组件级重用; 层次化推理生成复杂科学图</td>
+    <td><a href="https://arxiv.org/abs/2601.04390">arXiv 2601.04390</a></td>
   </tr>
   <tr>
-    <td>7</td><td><strong>OmniLottie</strong></td><td><span class="tag">CVPR 2026</span></td>
+    <td>7</td>
+    <td><strong>OmniLottie: Controllable Lottie Animation Generation with Parameterized Tokenization</strong><br><span style="font-size:0.85em;color:#666;">Yang et al.</span></td>
+    <td><span class="tag">CVPR 2026</span></td>
     <td>参数化 Lottie Token 设计; MMLottie-2M 大规模矢量动画数据集; 多模态条件生成 (文本/图像/关键帧); 动作可控动画编辑</td>
+    <td><a href="https://arxiv.org/abs/2603.02138">arXiv 2603.02138</a></td>
   </tr>
 </table>
 
 <h3>9.3 图表与数据可视化 (6篇)</h3>
 <table>
-  <tr><th width="30">#</th><th width="200">论文</th><th width="95">发表</th><th>关键贡献</th></tr>
+  <tr><th width="30">#</th><th>论文全名</th><th width="100">发表</th><th>关键贡献</th><th width="105">链接</th></tr>
   <tr>
-    <td>8</td><td><strong>METAL</strong></td><td><span class="tag purple">ACL 2025</span></td>
+    <td>8</td>
+    <td><strong>METAL: A Multi-Agent Framework for Chart Generation with Test-Time Scaling</strong><br><span style="font-size:0.85em;color:#666;">Li et al. (UCLA × Adobe Research)</span></td>
+    <td><span class="tag purple">ACL 2025</span></td>
     <td>4-Agent 代码生成框架; <strong>Test-time scaling</strong> 提升图表质量; Matplotlib 代码输出 (可复现+可编辑); 形式化评估指标超越 GPT-4V 直接生成</td>
+    <td><a href="https://arxiv.org/abs/2502.17651">arXiv 2502.17651</a></td>
   </tr>
   <tr>
-    <td>9</td><td><strong>PlotGen</strong></td><td>WWW 2025</td>
+    <td>9</td>
+    <td><strong>PlotGen: Multi-Modal Retrieval-Augmented Generation for Scientific Plot Creation</strong><br><span style="font-size:0.85em;color:#666;">Goswami et al.</span></td>
+    <td>WWW 2025</td>
     <td>多模态检索增强反馈 agent; 从外部图表库检索相似范例指导生成; 视觉-文本多模态评分</td>
+    <td><a href="https://dl.acm.org/doi/10.1145/3589334.3645643">ACM DL</a></td>
   </tr>
   <tr>
-    <td>10</td><td><strong>C² / ChartAF</strong></td><td>CHI 2024</td>
-    <td>无参考自动反馈机制; ChartUIE-8K 图表信息提取数据集; 将图表分解为独立视觉元素打分; 无需人工标注的自动化质量评估</td>
+    <td>10</td>
+    <td><strong>C²: Scalable Auto-Feedback for LLM-based Chart Generation</strong><br><span style="font-size:0.85em;color:#666;">Koh et al. (CMU)</span></td>
+    <td>CHI 2024</td>
+    <td>无参考自动反馈机制 (ChartAF); ChartUIE-8K 图表信息提取数据集; 将图表分解为独立视觉元素打分; 无需人工标注的自动化质量评估</td>
+    <td><a href="https://arxiv.org/abs/2410.18652">arXiv 2410.18652</a></td>
   </tr>
   <tr>
-    <td>11</td><td><strong>Text2Chart31</strong></td><td>EMNLP 2024</td>
+    <td>11</td>
+    <td><strong>Text2Chart31: Instruction Tuning for Chart Generation with Automatic Feedback</strong><br><span style="font-size:0.85em;color:#666;">Pesaran Zadeh et al.</span></td>
+    <td>EMNLP 2024</td>
     <td>RL 指令微调生成 31 种图表类型; 强化学习优化图表-文本对齐; 多类型统一生成框架</td>
+    <td><a href="https://aclanthology.org/2024.emnlp-main/">ACL Anthology</a></td>
   </tr>
   <tr>
-    <td>12</td><td><strong>A2P-Vis</strong></td><td>VIS 2025</td>
+    <td>12</td>
+    <td><strong>A2P-Vis: From Analysis to Presentation — A Two-Stage Agent Pipeline for Visual Data Storytelling</strong><br><span style="font-size:0.85em;color:#666;">et al.</span></td>
+    <td>VIS 2025</td>
     <td>分析→呈现两阶段 agent pipeline; 先数据洞察后可视化设计; 解耦分析与渲染</td>
+    <td><a href="https://ieeexplore.ieee.org/">IEEE VIS</a></td>
   </tr>
   <tr>
-    <td>13</td><td><strong>ShowTable</strong></td><td><span class="tag">CVPR 2026</span></td>
+    <td>13</td>
+    <td><strong>ShowTable: Generating Table-to-Infographics with MLLM and Diffusion Model Collaboration</strong><br><span style="font-size:0.85em;color:#666;">Liu et al.</span></td>
+    <td><span class="tag">CVPR 2026</span></td>
     <td>MLLM + 扩散模型协同生成表格信息图; TableVisBench (800 高难度实例, 5 维评估); 表格到信息图的忠实度保证; 文本-数据-视觉三模态对齐</td>
+    <td><a href="https://arxiv.org/abs/2512.13303">arXiv 2512.13303</a></td>
   </tr>
 </table>
 
 <h3>9.4 框图与架构生成 (7篇)</h3>
 <table>
-  <tr><th width="30">#</th><th width="200">论文</th><th width="95">发表</th><th>关键贡献</th></tr>
+  <tr><th width="30">#</th><th>论文全名</th><th width="100">发表</th><th>关键贡献</th><th width="105">链接</th></tr>
   <tr>
-    <td>14</td><td><strong>DiagrammerGPT</strong></td><td>COLM 2024</td>
+    <td>14</td>
+    <td><strong>DiagrammerGPT: Generating Open-Domain Diagrams with LLM-Guided Planning and GLIGEN Grounding</strong><br><span style="font-size:0.85em;color:#666;">Zala et al. (UNC Chapel Hill)</span></td>
+    <td>COLM 2024</td>
     <td><strong>奠基性工作:</strong> LLM 规划布局 + GLIGEN 定位渲染; 双阶段范式 (先规划再绘制); 被后续几乎所有框图工作引用</td>
+    <td><a href="https://arxiv.org/abs/2310.12128">arXiv 2310.12128</a></td>
   </tr>
   <tr>
-    <td>15</td><td><strong>DiagramGPT-Llama3</strong></td><td><span class="tag purple">AAAI 2026</span></td>
+    <td>15</td>
+    <td><strong>DiagramGPT-Llama3: Fine-Grained Alignment-Based Structure Generation for Scientific Diagrams</strong><br><span style="font-size:0.85em;color:#666;">Chen et al.</span></td>
+    <td><span class="tag purple">AAAI 2026</span></td>
     <td>FABS (Fine-grained Alignment-Based Structure) + CAAL (Context-Aware Adaptive Layout); 可编辑 mxGraph 格式; Llama3 轻量架构</td>
+    <td><a href="https://ojs.aaai.org/index.php/AAAI/article/view/40286">AAAI 2026</a></td>
   </tr>
   <tr>
-    <td>16</td><td><strong>GenAI-DrawIO-Creator</strong></td><td>arXiv Jan 2026</td>
+    <td>16</td>
+    <td><strong>GenAI-DrawIO-Creator: Automating Scientific Diagram Generation with LLM-Driven Draw.io XML</strong><br><span style="font-size:0.85em;color:#666;">Yu & Jiang</span></td>
+    <td>arXiv Jan 2026</td>
     <td>Claude 3.7 驱动生成 draw.io XML; 原生可编辑+可导入主流工具; 零训练成本 (纯 prompt engineering)</td>
+    <td><a href="https://arxiv.org/abs/2601.05162">arXiv 2601.05162</a></td>
   </tr>
   <tr>
-    <td>17</td><td><strong>Feynman</strong></td><td>arXiv Mar 2026</td>
+    <td>17</td>
+    <td><strong>Feynman: Scientific Diagram Generation with the Penrose System and the Diagramma Benchmark</strong><br><span style="font-size:0.85em;color:#666;">Wen et al. (CMU)</span></td>
+    <td>arXiv Mar 2026</td>
     <td>基于 Penrose 系统的科学图表生成; Diagramma 基准数据集; 声明式规范→自动布局; CMU 团队</td>
+    <td><a href="https://arxiv.org/abs/2603.12597">arXiv 2603.12597</a></td>
   </tr>
   <tr>
-    <td>18</td><td><strong>VisPainter</strong></td><td>arXiv Oct 2025</td>
+    <td>18</td>
+    <td><strong>VisPainter: Multi-Agent Collaborative Visualization via MCP Protocol with 7-Dimensional Evaluation</strong><br><span style="font-size:0.85em;color:#666;">Sun et al.</span></td>
+    <td>arXiv Oct 2025</td>
     <td><strong>MCP 协议</strong> 多智能体协作; 7 维评估指标 (VisBench); 内容/布局/视觉/交互成本全面评估; 首个为标准可编辑矢量图设计的评估体系</td>
+    <td><a href="https://arxiv.org/abs/2510.27452">arXiv 2510.27452</a></td>
   </tr>
   <tr>
-    <td>19</td><td><strong>Paper2SysArch</strong></td><td><span class="tag">CVPR 2026 Findings</span></td>
+    <td>19</td>
+    <td><strong>Paper2SysArch: Structure-Constrained System Architecture Diagram Generation from Academic Papers</strong><br><span style="font-size:0.85em;color:#666;">Guo et al.</span></td>
+    <td><span class="tag">CVPR 2026 Findings</span></td>
     <td>结构约束系统架构图生成; 论文全文→架构图; 节点-边约束保证拓扑正确性</td>
+    <td><a href="https://arxiv.org/abs/2511.18036">arXiv 2511.18036</a></td>
   </tr>
   <tr>
-    <td>20</td><td><strong>SciDoc2Diagrammer-MAF</strong></td><td>EMNLP 2024</td>
+    <td>20</td>
+    <td><strong>SciDoc2Diagrammer-MAF: Multi-Aspect Alignment for Scientific Document-to-Diagram Generation</strong><br><span style="font-size:0.85em;color:#666;">Mondal et al.</span></td>
+    <td>EMNLP 2024</td>
     <td>科学文档→多模态对齐图表生成; 跨模态注意力融合; 文本+图表联合编码</td>
+    <td><a href="https://arxiv.org/abs/2409.19242">arXiv 2409.19242</a></td>
   </tr>
 </table>
 
 <h3>9.5 SVG/矢量生成 (3篇)</h3>
 <table>
-  <tr><th width="30">#</th><th width="200">论文</th><th width="95">发表</th><th>关键贡献</th></tr>
+  <tr><th width="30">#</th><th>论文全名</th><th width="100">发表</th><th>关键贡献</th><th width="105">链接</th></tr>
   <tr>
-    <td>21</td><td><strong>IntroSVG</strong></td><td>arXiv Mar 2026</td>
+    <td>21</td>
+    <td><strong>IntroSVG: Introspective Generator-Critic with Direct Preference Optimization for SVG Generation</strong><br><span style="font-size:0.85em;color:#666;">Wang et al.</span></td>
+    <td>arXiv Mar 2026</td>
     <td>内省式 Generator-Critic + DPO 偏好优化; SVG 生成后自我审视+修正; 无需外部 Critic 模型</td>
+    <td><a href="https://arxiv.org/abs/2603.09312">arXiv 2603.09312</a></td>
   </tr>
   <tr>
-    <td>22</td><td><strong>VecGlypher</strong></td><td><span class="tag">CVPR 2026</span></td>
+    <td>22</td>
+    <td><strong>VecGlypher: Autoregressive Vector Glyph Generation via SVG Path Tokenization</strong><br><span style="font-size:0.85em;color:#666;">Huang et al. (Meta AI)</span></td>
+    <td><span class="tag">CVPR 2026</span></td>
     <td>自回归 SVG path token 序列生成; Meta 团队; 矢量字形精确控制; 无需扩散模型的离散 token 方案</td>
+    <td><a href="https://arxiv.org/abs/2602.21461">arXiv 2602.21461</a></td>
   </tr>
   <tr>
-    <td>23</td><td><strong>HiVG</strong></td><td>arXiv Apr 2026</td>
+    <td>23</td>
+    <td><strong>HiVG: Hierarchical Vector Graphics Tokenization for Efficient Autoregressive Generation</strong><br><span style="font-size:0.85em;color:#666;">Xing et al.</span></td>
+    <td>arXiv Apr 2026</td>
     <td>层级矢量 token 化; 63.8% 序列压缩率; 层级结构保持 SVG 语义完整性; 大幅降低自回归序列长度</td>
+    <td><a href="https://arxiv.org/abs/2604.05072">arXiv 2604.05072</a></td>
   </tr>
 </table>
 
 <h3>9.6 海报/幻灯片/信息图 (5篇)</h3>
 <table>
-  <tr><th width="30">#</th><th width="200">论文</th><th width="95">发表</th><th>关键贡献</th></tr>
+  <tr><th width="30">#</th><th>论文全名</th><th width="100">发表</th><th>关键贡献</th><th width="105">链接</th></tr>
   <tr>
-    <td>24</td><td><strong>APEX</strong></td><td>arXiv Jan 2026</td>
+    <td>24</td>
+    <td><strong>APEX: Academic Poster Editing Agent with Review-and-Adjustment Mechanism</strong><br><span style="font-size:0.85em;color:#666;">Shi et al. (East China Normal University)</span></td>
+    <td>arXiv Jan 2026</td>
     <td>学术海报交互编辑 agent; Review-and-Adjustment 机制; APEX-Bench (514 条编辑指令); 华东师大; 多轮对话式局部修改</td>
+    <td><a href="https://arxiv.org/abs/2601.04794">arXiv 2601.04794</a></td>
   </tr>
   <tr>
-    <td>25</td><td><strong>PosterVerse</strong></td><td><span class="tag purple">AAAI 2026 Oral</span></td>
+    <td>25</td>
+    <td><strong>PosterVerse: HTML Typesetting Engine for Text-Accurate Academic Poster Generation</strong><br><span style="font-size:0.85em;color:#666;">Liu et al. (South China University of Technology)</span></td>
+    <td><span class="tag purple">AAAI 2026 Oral</span></td>
     <td><strong>HTML 排版引擎</strong> 保证文本矢量精度; PosterDNA 设计知识库; 100% 文字渲染正确率; 解决扩散模型文字乱码问题</td>
+    <td><a href="https://arxiv.org/abs/2601.03993">arXiv 2601.03993</a></td>
   </tr>
   <tr>
-    <td>26</td><td><strong>SlidesGen-Bench</strong></td><td>arXiv Jan 2026</td>
+    <td>26</td>
+    <td><strong>SlidesGen-Bench: Benchmarking Automated Slides Generation with Spatiotemporal Consistency</strong><br><span style="font-size:0.85em;color:#666;">Yang et al.</span></td>
+    <td>arXiv Jan 2026</td>
     <td>首个幻灯片生成基准; 8 系统 + 1.5K 对齐数据; 内容/美学/可编辑性/<strong>时间节奏</strong>四维评估; 将幻灯片视为时空序列</td>
+    <td><a href="https://arxiv.org/abs/2601.09487">arXiv 2601.09487</a></td>
   </tr>
   <tr>
-    <td>27</td><td><strong>LiveFigure</strong></td><td>ICML 2026 (?)</td>
+    <td>27</td>
+    <td><strong>LiveFigure: VLM Agent for Direct PowerPoint Figure Manipulation</strong><br><span style="font-size:0.85em;color:#666;">et al.</span></td>
+    <td>ICML 2026 (?)</td>
     <td>VLM agent 直接操作 PowerPoint 界面; GUI 自动化生成+编辑图表; 保留原生可编辑性</td>
+    <td>—</td>
   </tr>
   <tr>
-    <td>28</td><td><strong>PosterLayout</strong></td><td>arXiv 2025</td>
+    <td>28</td>
+    <td><strong>PosterLayout: Constraint-Solving and Aesthetic Optimization for Academic Poster Layout</strong><br><span style="font-size:0.85em;color:#666;">et al.</span></td>
+    <td>arXiv 2025</td>
     <td>学术海报自动布局优化; 约束求解+美学评分; 元素不重叠+视觉层次自动调整</td>
+    <td>—</td>
   </tr>
 </table>
 
 <h3>9.7 评估基准 (8篇/系统)</h3>
 <table>
-  <tr><th width="30">#</th><th width="200">论文</th><th width="95">发表</th><th>关键贡献</th></tr>
+  <tr><th width="30">#</th><th>论文全名</th><th width="100">发表</th><th>关键贡献</th><th width="105">链接</th></tr>
   <tr>
-    <td>29</td><td><strong>FigureBench</strong></td><td>ICLR 2026 (AutoFigure)</td>
+    <td>29</td>
+    <td><strong>FigureBench: A Benchmark for Long-Context Scientific Figure Generation</strong><br><span style="font-size:0.85em;color:#666;">Zhu, Lin et al. (AutoFigure, Westlake University)</span></td>
+    <td><span class="tag green">ICLR 2026</span></td>
     <td>3,300 长文本-科学图对; VLM 打分 + 人类专家盲评双轨; 首个长上下文科学插图专用基准</td>
+    <td><a href="https://arxiv.org/abs/2602.03828">arXiv 2602.03828</a></td>
   </tr>
   <tr>
-    <td>30</td><td><strong>PaperBananaBench</strong></td><td>arXiv Jan 2026</td>
+    <td>30</td>
+    <td><strong>PaperBananaBench: A Multi-Agent VLM-as-Judge Benchmark for Methodology Figures</strong><br><span style="font-size:0.85em;color:#666;">Zhu et al. (PKU × Google)</span></td>
+    <td>arXiv Jan 2026</td>
     <td>292 NeurIPS 方法论图; 忠实性/简明性/可读性/美学四维; 多智能体 VLM-as-Judge</td>
+    <td><a href="https://arxiv.org/abs/2601.23265">arXiv 2601.23265</a></td>
   </tr>
   <tr>
-    <td>31</td><td><strong>SciFlow-Bench</strong></td><td><span class="tag purple">ACL 2026 Main</span></td>
+    <td>31</td>
+    <td><strong>SciFlow-Bench: Inverse Parsing Structure Evaluation for Scientific Figure Generation</strong><br><span style="font-size:0.85em;color:#666;">Zhang et al.</span></td>
+    <td><span class="tag purple">ACL 2026 Main</span></td>
     <td><strong>逆解析结构评估:</strong> 从生成的图中反向提取结构, 与原文对照验证; 解决"看起来对但结构错"问题</td>
+    <td><a href="https://arxiv.org/abs/2602.09809">arXiv 2602.09809</a></td>
   </tr>
   <tr>
-    <td>32</td><td><strong>SridBench</strong></td><td>arXiv May 2025</td>
+    <td>32</td>
+    <td><strong>SridBench: A Cross-Disciplinary Benchmark for Scientific Figure Generation Across 13 Disciplines</strong><br><span style="font-size:0.85em;color:#666;">Chang et al.</span></td>
+    <td>arXiv May 2025</td>
     <td>首个跨学科科研插图基准; 1,120 实例, <strong>13 学科</strong>; 文字/结构/逻辑/可读性/美学/信息量 6 维; 揭示严重跨领域泛化问题</td>
+    <td><a href="https://arxiv.org/abs/2505.22126">arXiv 2505.22126</a></td>
   </tr>
   <tr>
-    <td>33</td><td><strong>SciGenBench</strong></td><td>arXiv Jan 2026</td>
+    <td>33</td>
+    <td><strong>SciGenBench: A Benchmark for Scientific Plausibility Evaluation in AI-Generated Figures</strong><br><span style="font-size:0.85em;color:#666;">Lin et al.</span></td>
+    <td>arXiv Jan 2026</td>
     <td>引入<strong>"科学合理性"</strong> (Scientific Plausibility) 维度; 评估图表是否符合领域公理; 发现 T2I 模型在此维度远低于美学维度</td>
+    <td><a href="https://arxiv.org/abs/2601.17027">arXiv 2601.17027</a></td>
   </tr>
   <tr>
-    <td>34</td><td><strong>VisBench</strong></td><td>arXiv Oct 2025 (VisPainter)</td>
+    <td>34</td>
+    <td><strong>VisBench: A 7-Dimensional Evaluation Protocol for Editable Vector Graphics in Scientific Visualization</strong><br><span style="font-size:0.85em;color:#666;">Sun et al. (VisPainter)</span></td>
+    <td>arXiv Oct 2025</td>
     <td>7 维评估: 内容准确性/布局质量/视觉美观/交互成本/可编辑性/结构保真度; 为可编辑矢量图设计</td>
+    <td><a href="https://arxiv.org/abs/2510.27452">arXiv 2510.27452</a></td>
   </tr>
   <tr>
-    <td>35</td><td><strong>APEX-Bench</strong></td><td>arXiv Jan 2026</td>
+    <td>35</td>
+    <td><strong>APEX-Bench: A Benchmark for Interactive Academic Poster Editing with Instruction Following</strong><br><span style="font-size:0.85em;color:#666;">Shi et al. (ECNU)</span></td>
+    <td>arXiv Jan 2026</td>
     <td>514 条海报编辑指令; 指令遵循度/修改范围/视觉一致性; 首个海报交互编辑基准</td>
+    <td><a href="https://arxiv.org/abs/2601.04794">arXiv 2601.04794</a></td>
   </tr>
   <tr>
-    <td>36</td><td><strong>DiagramBank</strong></td><td>arXiv 2026</td>
+    <td>36</td>
+    <td><strong>DiagramBank: A Large-Scale Diagram Dataset with RAG Codebase for Conditional Generation</strong><br><span style="font-size:0.85em;color:#666;">Zhang et al.</span></td>
+    <td>arXiv 2026</td>
     <td>89,422 科学示意图 + RAG 代码检索库; 支持以图搜图+以文搜图; 为条件生成提供范本</td>
+    <td><a href="https://arxiv.org/abs/2604.20857">arXiv 2604.20857</a></td>
   </tr>
 </table>
 
 <h3>9.8 AI Scientist 系统 (5篇)</h3>
 <table>
-  <tr><th width="30">#</th><th width="200">论文</th><th width="95">发表</th><th>关键贡献</th></tr>
+  <tr><th width="30">#</th><th>论文全名</th><th width="100">发表</th><th>关键贡献</th><th width="105">链接</th></tr>
   <tr>
-    <td>37</td><td><strong>The AI Scientist</strong></td><td><span class="tag orange">Nature 2026</span></td>
+    <td>37</td>
+    <td><strong>The AI Scientist: Towards Fully Automated Open-Ended Scientific Discovery</strong><br><span style="font-size:0.85em;color:#666;">Lu et al. (Sakana AI)</span></td>
+    <td><span class="tag orange">Nature 2026</span></td>
     <td>首个 AI 论文通过人类同行评审; Sakana AI; 全自动科研流水线 (idea→实验→写作→图表); 里程碑式验证 AI 科学生态</td>
+    <td><a href="https://arxiv.org/abs/2408.06292">arXiv 2408.06292</a></td>
   </tr>
   <tr>
-    <td>38</td><td><strong>DeepScientist</strong></td><td><span class="tag green">ICLR 2026</span></td>
+    <td>38</td>
+    <td><strong>DeepScientist: Bayesian Optimization-Driven Autonomous Research with Integrated Figure Generation</strong><br><span style="font-size:0.85em;color:#666;">Weng et al. (Westlake University)</span></td>
+    <td><span class="tag green">ICLR 2026</span></td>
     <td>贝叶斯优化驱动研究方向选择; 集成 AutoFigure 图表生成; 西湖大学; 结构化科研流程</td>
+    <td>—</td>
   </tr>
   <tr>
-    <td>39</td><td><strong>Medical AI Scientist</strong></td><td>arXiv 2026</td>
+    <td>39</td>
+    <td><strong>Medical AI Scientist: Autonomous Clinical Research Pipeline with Figure Generation</strong><br><span style="font-size:0.85em;color:#666;">et al.</span></td>
+    <td>arXiv 2026</td>
     <td>临床自主研究 agent; MICCAI 级论文生成; 医学影像+临床数据分析+图表生成全流程</td>
+    <td>—</td>
   </tr>
   <tr>
-    <td>40</td><td><strong>PARNESS</strong></td><td>arXiv May 2026</td>
+    <td>40</td>
+    <td><strong>PARNESS: A Declarative Pipeline for Automated Research with Cross-Run Knowledge Accumulation</strong><br><span style="font-size:0.85em;color:#666;">et al.</span></td>
+    <td>arXiv May 2026</td>
     <td>声明式科研流水线; 跨运行知识积累; 模块化可复用实验组件; 增量式科学发现</td>
+    <td><a href="https://arxiv.org/abs/2605.05258">arXiv 2605.05258</a></td>
   </tr>
   <tr>
-    <td>41</td><td><strong>AI CFD Scientist</strong></td><td>arXiv 2026</td>
+    <td>41</td>
+    <td><strong>AI CFD Scientist: Autonomous Computational Fluid Dynamics Research with VLM Physics Verification Gate</strong><br><span style="font-size:0.85em;color:#666;">et al.</span></td>
+    <td>arXiv 2026</td>
     <td>计算流体力学自主科研; VLM 物理验证门 (生成结果必须通过物理定律检查); 领域知识约束的典范</td>
+    <td>—</td>
   </tr>
 </table>
 
 <h3>9.9 综述与相关研究 (1篇)</h3>
 <table>
-  <tr><th width="30">#</th><th width="200">论文</th><th width="95">发表</th><th>关键贡献</th></tr>
+  <tr><th width="30">#</th><th>论文全名</th><th width="100">发表</th><th>关键贡献</th><th width="105">链接</th></tr>
   <tr>
-    <td>42</td><td><strong>AI-Generated Figures Survey</strong></td><td>arXiv Mar 2026</td>
-    <td>AI 生成科学图表综合综述; 系统分类与评估; 覆盖扩散/自回归/智能体多条路线</td>
+    <td>42</td>
+    <td><strong>AI-Generated Scientific Figures: A Comprehensive Survey of Methods, Benchmarks, and Future Directions</strong><br><span style="font-size:0.85em;color:#666;">Chen</span></td>
+    <td>arXiv Mar 2026</td>
+    <td>AI 生成科学图表综合综述; 系统分类与评估; 覆盖扩散/自回归/智能体/代码生成多条技术路线; 横向对比各方法优劣</td>
+    <td><a href="https://arxiv.org/abs/2603.16159">arXiv 2603.16159</a></td>
   </tr>
 </table>
 
