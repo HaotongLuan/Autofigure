@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 700" width="980" height="700">
+<style>
+.fig-node-label { font-family: Arial, Helvetica, sans-serif; font-size: 13px; fill: #1e293b; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.fig-edge-label { font-family: Arial, Helvetica, sans-serif; font-size: 11px; fill: #475569; text-anchor: middle; dominant-baseline: central; }
+.fig-edge-label-bg { fill: #ffffff; fill-opacity: 0.85; }
+.fig-group-label { font-family: Arial, Helvetica, sans-serif; font-size: 12px; fill: #64748b; font-weight: bold; }
+.fig-title { font-family: Arial, Helvetica, sans-serif; font-size: 20px; fill: #0f172a; text-anchor: middle; font-weight: bold; }
+.fig-legend-text { font-family: Arial, Helvetica, sans-serif; font-size: 10px; fill: #475569; }
+</style>
+<defs>
+<marker id="arrow-forward" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+<marker id="arrow-backward" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="10 0, 0 3.5, 10 7" fill="#475569"/></marker>
+<marker id="arrow-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/></marker>
+</defs>
+<text x="490.0" y="55.0" class="fig-title">RAG: Retrieval-Augmented Generation Pipeline</text>
+<!-- group: Retrieval Module -->
+<g id="group-retrieval-module">
+<rect x="190" y="110" width="300" height="280" rx="12" fill="#fffbeb" fill-opacity="0.4" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="8,4"/>
+<text x="202" y="128" class="fig-group-label">Retrieval Module</text>
+</g>
+<!-- group: Generation Module -->
+<g id="group-generation-module">
+<rect x="490" y="110" width="310" height="130" rx="12" fill="#faf5ff" fill-opacity="0.4" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="8,4"/>
+<text x="502" y="128" class="fig-group-label">Generation Module</text>
+</g>
+<!-- edge: query -> encoder -->
+<g id="edge-query-encoder">
+<path d="M 170.0 175.0 L 210.0 175.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="none" marker-start="none" marker-end="url(#arrow-forward)"/>
+</g>
+<!-- edge: encoder -> retriever -->
+<g id="edge-encoder-retriever">
+<path d="M 310.0 175.0 L 360.0 175.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="none" marker-start="none" marker-end="url(#arrow-forward)"/>
+<rect x="288.0" y="166.0" width="94" height="18" class="fig-edge-label-bg" rx="3"/>
+<text x="335.0" y="175.0" class="fig-edge-label">query vector</text>
+</g>
+<!-- edge: retriever -> docstore -->
+<g id="edge-retriever-docstore">
+<path d="M 410.0 210.0 L 410.0 280.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="none" marker-start="url(#arrow-backward)" marker-end="url(#arrow-forward)"/>
+<rect x="345.5" y="236.0" width="129" height="18" class="fig-edge-label-bg" rx="3"/>
+<text x="410.0" y="245.0" class="fig-edge-label">similarity search</text>
+</g>
+<!-- edge: retriever -> docs -->
+<g id="edge-retriever-docs">
+<path d="M 460.0 175.0 L 510.0 175.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="none" marker-start="none" marker-end="url(#arrow-forward)"/>
+<rect x="452.0" y="166.0" width="66" height="18" class="fig-edge-label-bg" rx="3"/>
+<text x="485.0" y="175.0" class="fig-edge-label">retrieve</text>
+</g>
+<!-- edge: docs -> generator -->
+<g id="edge-docs-generator">
+<path d="M 610.0 175.0 L 660.0 175.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="none" marker-start="none" marker-end="url(#arrow-forward)"/>
+<rect x="577.5" y="166.0" width="115" height="18" class="fig-edge-label-bg" rx="3"/>
+<text x="635.0" y="175.0" class="fig-edge-label">context + query</text>
+</g>
+<!-- edge: generator -> answer -->
+<g id="edge-generator-answer">
+<path d="M 770.0 175.0 L 820.0 175.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="none" marker-start="none" marker-end="url(#arrow-forward)"/>
+</g>
+<!-- node: query -->
+<g id="node-query">
+<rect x="60" y="150" width="110" height="50" rx="0" ry="0" fill="#e8f4fd" stroke="#1e40af" stroke-width="2"/>
+<text x="115.0" y="175.0" class="fig-node-label">User Query</text>
+</g>
+<!-- node: encoder -->
+<g id="node-encoder">
+<rect x="210" y="145" width="100" height="60" rx="8" ry="8" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+<text x="260.0" y="175.0" class="fig-node-label">Query
+Encoder</text>
+</g>
+<!-- node: retriever -->
+<g id="node-retriever">
+<path d="M 360 150.5 L 360 199.5 A 50.0 10.5 0 0 0 460 199.5 L 460 150.5 Z" fill="#fef3c7" stroke="#1e40af" stroke-width="2"/>
+<ellipse cx="410.0" cy="150.5" rx="50.0" ry="10.5" fill="#fef3c7" stroke="#1e40af" stroke-width="2"/>
+<path d="M 360 199.5 A 50.0 10.5 0 0 0 460 199.5" fill="none" stroke="#1e40af" stroke-width="2" stroke-dasharray="4,3"/>
+<path d="M 360 150.5 A 50.0 10.5 0 0 0 460 150.5" fill="none" stroke="#1e40af" stroke-width="2"/>
+<text x="410.0" y="175.0" class="fig-node-label">Dense
+Retriever</text>
+</g>
+<!-- node: docstore -->
+<g id="node-docstore">
+<path d="M 360 290.5 L 360 339.5 A 50.0 10.5 0 0 0 460 339.5 L 460 290.5 Z" fill="#f0fdf4" stroke="#1e40af" stroke-width="2"/>
+<ellipse cx="410.0" cy="290.5" rx="50.0" ry="10.5" fill="#f0fdf4" stroke="#1e40af" stroke-width="2"/>
+<path d="M 360 339.5 A 50.0 10.5 0 0 0 460 339.5" fill="none" stroke="#1e40af" stroke-width="2" stroke-dasharray="4,3"/>
+<path d="M 360 290.5 A 50.0 10.5 0 0 0 460 290.5" fill="none" stroke="#1e40af" stroke-width="2"/>
+<text x="410.0" y="315.0" class="fig-node-label">Document
+Store</text>
+</g>
+<!-- node: docs -->
+<g id="node-docs">
+<rect x="510" y="145" width="100" height="60" rx="0" ry="0" fill="#dcfce7" stroke="#1e40af" stroke-width="2"/>
+<text x="560.0" y="175.0" class="fig-node-label">Top-K
+Documents</text>
+</g>
+<!-- node: generator -->
+<g id="node-generator">
+<rect x="660" y="145" width="110" height="60" rx="8" ry="8" fill="#f3e8ff" stroke="#1e40af" stroke-width="2"/>
+<text x="715.0" y="175.0" class="fig-node-label">LLM
+Generator</text>
+</g>
+<!-- node: answer -->
+<g id="node-answer">
+<rect x="820" y="150" width="100" height="50" rx="0" ry="0" fill="#fef2f2" stroke="#1e40af" stroke-width="2"/>
+<text x="870.0" y="175.0" class="fig-node-label">Generated
+Answer</text>
+</g>
+<g id="legend">
+<rect x="290.0" y="669" width="18" height="12" rx="0" ry="0" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+<text x="312.0" y="675" class="fig-legend-text">Box</text>
+<rect x="352.0" y="669" width="18" height="12" rx="8" ry="8" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+<text x="374.0" y="675" class="fig-legend-text">Rounded</text>
+<path d="M 414.0 677 L 414.0 673 A 9.0 8 0 0 0 432.0 673 L 432.0 677 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+<ellipse cx="423.0" cy="677" rx="9.0" ry="8" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+<path d="M 414.0 673 A 9.0 8 0 0 0 432.0 673" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4,3"/>
+<path d="M 414.0 677 A 9.0 8 0 0 0 432.0 677" fill="none" stroke="#94a3b8" stroke-width="2"/>
+<text x="436.0" y="675" class="fig-legend-text">Cylinder</text>
+<polygon points="485.0,669 494.0,675.0 485.0,681 476.0,675.0" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+<text x="498.0" y="675" class="fig-legend-text">Diamond</text>
+<ellipse cx="547.0" cy="675.0" rx="9.0" ry="6.0" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+<text x="560.0" y="675" class="fig-legend-text">Circle</text>
+<polygon points="602.7,669 618.0,669 615.3,681 600.0,681" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+<text x="622.0" y="675" class="fig-legend-text">Para.</text>
+<polygon points="671.00,669.00 672.41,673.06 676.71,673.15 673.28,675.74 674.53,679.85 671.00,677.40 667.47,679.85 668.72,675.74 665.29,673.15 669.59,673.06" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+<text x="684.0" y="675" class="fig-legend-text">Star</text>
+</g>
+</svg>

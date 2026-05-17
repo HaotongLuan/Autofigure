@@ -1,0 +1,158 @@
+{
+  "title": "RAG: Retrieval-Augmented Generation Pipeline",
+  "figure_type": "architecture_diagram",
+  "nodes": [
+    {
+      "id": "query",
+      "label": "User Query",
+      "type": "box",
+      "x": 30,
+      "y": 300,
+      "width": 110,
+      "height": 50,
+      "color": "#e8f4fd"
+    },
+    {
+      "id": "encoder",
+      "label": "Query\nEncoder",
+      "type": "rounded_box",
+      "x": 180,
+      "y": 295,
+      "width": 100,
+      "height": 60,
+      "color": "#dbeafe"
+    },
+    {
+      "id": "retriever",
+      "label": "Dense\nRetriever",
+      "type": "cylinder",
+      "x": 330,
+      "y": 290,
+      "width": 100,
+      "height": 70,
+      "color": "#fef3c7"
+    },
+    {
+      "id": "docstore",
+      "label": "Document\nStore",
+      "type": "cylinder",
+      "x": 330,
+      "y": 430,
+      "width": 100,
+      "height": 70,
+      "color": "#f0fdf4"
+    },
+    {
+      "id": "docs",
+      "label": "Top-K\nDocuments",
+      "type": "box",
+      "x": 480,
+      "y": 295,
+      "width": 100,
+      "height": 60,
+      "color": "#dcfce7"
+    },
+    {
+      "id": "generator",
+      "label": "LLM\nGenerator",
+      "type": "rounded_box",
+      "x": 630,
+      "y": 295,
+      "width": 110,
+      "height": 60,
+      "color": "#f3e8ff"
+    },
+    {
+      "id": "answer",
+      "label": "Generated\nAnswer",
+      "type": "box",
+      "x": 790,
+      "y": 300,
+      "width": 100,
+      "height": 50,
+      "color": "#fef2f2"
+    }
+  ],
+  "edges": [
+    {
+      "from": "query",
+      "to": "encoder",
+      "label": "",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "encoder",
+      "to": "retriever",
+      "label": "query vector",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "retriever",
+      "to": "docstore",
+      "label": "similarity search",
+      "style": "solid",
+      "direction": "bidirectional"
+    },
+    {
+      "from": "retriever",
+      "to": "docs",
+      "label": "retrieve",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "docs",
+      "to": "generator",
+      "label": "context + query",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "generator",
+      "to": "answer",
+      "label": "",
+      "style": "solid",
+      "direction": "forward"
+    }
+  ],
+  "groups": [
+    {
+      "label": "Retrieval Module",
+      "nodes": [
+        "encoder",
+        "retriever",
+        "docstore"
+      ],
+      "bounds": {
+        "x": 160,
+        "y": 260,
+        "width": 300,
+        "height": 280
+      },
+      "color": "#fffbeb"
+    },
+    {
+      "label": "Generation Module",
+      "nodes": [
+        "docs",
+        "generator"
+      ],
+      "bounds": {
+        "x": 460,
+        "y": 260,
+        "width": 310,
+        "height": 130
+      },
+      "color": "#faf5ff"
+    }
+  ],
+  "layout": {
+    "type": "left-to-right",
+    "spacing": {
+      "horizontal": 40,
+      "vertical": 80
+    }
+  }
+}

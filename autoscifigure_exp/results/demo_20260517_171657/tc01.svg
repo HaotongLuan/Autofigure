@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 930 700" width="930" height="700">
+<style>
+.fig-node-label { font-family: Arial, Helvetica, sans-serif; font-size: 13px; fill: #1e293b; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.fig-edge-label { font-family: Arial, Helvetica, sans-serif; font-size: 11px; fill: #475569; text-anchor: middle; dominant-baseline: central; }
+.fig-edge-label-bg { fill: #ffffff; fill-opacity: 0.85; }
+.fig-group-label { font-family: Arial, Helvetica, sans-serif; font-size: 12px; fill: #64748b; font-weight: bold; }
+.fig-title { font-family: Arial, Helvetica, sans-serif; font-size: 20px; fill: #0f172a; text-anchor: middle; font-weight: bold; }
+.fig-legend-text { font-family: Arial, Helvetica, sans-serif; font-size: 10px; fill: #475569; }
+</style>
+<defs>
+<marker id="arrow-forward" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="0 0, 10 3.5, 0 7" fill="#475569"/></marker>
+<marker id="arrow-backward" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="10 0, 0 3.5, 10 7" fill="#475569"/></marker>
+<marker id="arrow-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/></marker>
+</defs>
+<text x="465.0" y="55.0" class="fig-title">Transformer Architecture</text>
+<!-- group: Encoder Stack (N=6) -->
+<g id="group-encoder-stack-(n=6)">
+<rect x="210" y="130" width="170" height="280" rx="12" fill="#eff6ff" fill-opacity="0.4" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="8,4"/>
+<text x="222" y="148" class="fig-group-label">Encoder Stack (N=6)</text>
+</g>
+<!-- group: Decoder Stack (N=6) -->
+<g id="group-decoder-stack-(n=6)">
+<rect x="570" y="130" width="170" height="280" rx="12" fill="#f0fdf4" fill-opacity="0.4" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="8,4"/>
+<text x="582" y="148" class="fig-group-label">Decoder Stack (N=6)</text>
+</g>
+<!-- edge: input -> embed -->
+<g id="edge-input-embed">
+<path d="M 110.0 170.0 L 110.0 210.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="none" marker-start="none" marker-end="url(#arrow-forward)"/>
+</g>
+<!-- edge: embed -> posenc -->
+<g id="edge-embed-posenc">
+<path d="M 110.0 270.0 L 110.0 300.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="none" marker-start="none" marker-end="url(#arrow-forward)"/>
+<rect x="90.0" y="276.0" width="40" height="18" class="fig-edge-label-bg" rx="3"/>
+<text x="110.0" y="285.0" class="fig-edge-label">+</text>
+</g>
+<!-- edge: posenc -> enc1 -->
+<g id="edge-posenc-enc1">
+<path d="M 151.5 300.0 L 248.5 230.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="none" marker-start="none" marker-end="url(#arrow-forward)"/>
+</g>
+<!-- edge: enc1 -> encN -->
+<g id="edge-enc1-encN">
+<path d="M 290.0 230.0 L 290.0 310.0" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8,4" marker-start="none" marker-end="url(#arrow-dashed)"/>
+<rect x="270.0" y="261.0" width="40" height="18" class="fig-edge-label-bg" rx="3"/>
+<text x="290.0" y="270.0" class="fig-edge-label">×N</text>
+</g>
+<!-- edge: encN -> enc_out -->
+<g id="edge-encN-enc_out">
+<path d="M 350.0 317.3 L 420.0 290.8" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="none" marker-start="none" marker-end="url(#arrow-forward)"/>
+</g>
+<!-- edge: enc_out -> dec1 -->
+<g id="edge-enc_out-dec1">
+<path d="M 530.0 248.0 L 590.0 224.0" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8,4" marker-start="none" marker-end="url(#arrow-dashed)"/>
+<rect x="520.0" y="227.0" width="80" height="18" class="fig-edge-label-bg" rx="3"/>
+<text x="560.0" y="236.0" class="fig-edge-label">cross-attn</text>
+</g>
+<!-- edge: enc_out -> decN -->
+<g id="edge-enc_out-decN">
+<path d="M 530.0 292.0 L 590.0 316.0" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8,4" marker-start="none" marker-end="url(#arrow-dashed)"/>
+<rect x="520.0" y="295.0" width="80" height="18" class="fig-edge-label-bg" rx="3"/>
+<text x="560.0" y="304.0" class="fig-edge-label">cross-attn</text>
+</g>
+<!-- edge: dec1 -> decN -->
+<g id="edge-dec1-decN">
+<path d="M 650.0 230.0 L 650.0 310.0" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8,4" marker-start="none" marker-end="url(#arrow-dashed)"/>
+<rect x="630.0" y="261.0" width="40" height="18" class="fig-edge-label-bg" rx="3"/>
+<text x="650.0" y="270.0" class="fig-edge-label">×N</text>
+</g>
+<!-- edge: decN -> linear -->
+<g id="edge-decN-linear">
+<path d="M 698.6 310.0 L 779.5 260.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="none" marker-start="none" marker-end="url(#arrow-forward)"/>
+</g>
+<!-- edge: linear -> softmax -->
+<g id="edge-linear-softmax">
+<path d="M 820.0 260.0 L 820.0 290.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="none" marker-start="none" marker-end="url(#arrow-forward)"/>
+</g>
+<!-- edge: softmax -> output -->
+<g id="edge-softmax-output">
+<path d="M 820.0 340.0 L 820.0 370.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="none" marker-start="none" marker-end="url(#arrow-forward)"/>
+</g>
+<!-- node: input -->
+<g id="node-input">
+<rect x="60" y="110" width="100" height="60" rx="0" ry="0" fill="#e8f4fd" stroke="#1e40af" stroke-width="2"/>
+<text x="110.0" y="140.0" class="fig-node-label">Input
+Tokens</text>
+</g>
+<!-- node: embed -->
+<g id="node-embed">
+<rect x="60" y="210" width="100" height="60" rx="8" ry="8" fill="#e8f4fd" stroke="#1e40af" stroke-width="2"/>
+<text x="110.0" y="240.0" class="fig-node-label">Input
+Embedding</text>
+</g>
+<!-- node: posenc -->
+<g id="node-posenc">
+<rect x="60" y="300" width="100" height="60" rx="0" ry="0" fill="#fef3c7" stroke="#1e40af" stroke-width="2"/>
+<text x="110.0" y="330.0" class="fig-node-label">Positional
+Encoding</text>
+</g>
+<!-- node: enc1 -->
+<g id="node-enc1">
+<rect x="230" y="170" width="120" height="60" rx="8" ry="8" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+<text x="290.0" y="200.0" class="fig-node-label">Encoder
+Layer 1</text>
+</g>
+<!-- node: encN -->
+<g id="node-encN">
+<rect x="230" y="310" width="120" height="60" rx="8" ry="8" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+<text x="290.0" y="340.0" class="fig-node-label">Encoder
+Layer N=6</text>
+</g>
+<!-- node: enc_out -->
+<g id="node-enc_out">
+<polygon points="436.5,240 530,240 513.5,300 420,300" fill="#e0e7ff" stroke="#1e40af" stroke-width="2"/>
+<text x="475.0" y="270.0" class="fig-node-label">Encoder
+Output</text>
+</g>
+<!-- node: dec1 -->
+<g id="node-dec1">
+<rect x="590" y="170" width="120" height="60" rx="8" ry="8" fill="#dcfce7" stroke="#1e40af" stroke-width="2"/>
+<text x="650.0" y="200.0" class="fig-node-label">Decoder
+Layer 1</text>
+</g>
+<!-- node: decN -->
+<g id="node-decN">
+<rect x="590" y="310" width="120" height="60" rx="8" ry="8" fill="#dcfce7" stroke="#1e40af" stroke-width="2"/>
+<text x="650.0" y="340.0" class="fig-node-label">Decoder
+Layer N=6</text>
+</g>
+<!-- node: linear -->
+<g id="node-linear">
+<rect x="770" y="210" width="100" height="50" rx="0" ry="0" fill="#f3e8ff" stroke="#1e40af" stroke-width="2"/>
+<text x="820.0" y="235.0" class="fig-node-label">Linear
+Projection</text>
+</g>
+<!-- node: softmax -->
+<g id="node-softmax">
+<rect x="770" y="290" width="100" height="50" rx="0" ry="0" fill="#f3e8ff" stroke="#1e40af" stroke-width="2"/>
+<text x="820.0" y="315.0" class="fig-node-label">Softmax</text>
+</g>
+<!-- node: output -->
+<g id="node-output">
+<rect x="770" y="370" width="100" height="60" rx="0" ry="0" fill="#fef2f2" stroke="#1e40af" stroke-width="2"/>
+<text x="820.0" y="400.0" class="fig-node-label">Output
+Probabilities</text>
+</g>
+<g id="legend">
+<rect x="265.0" y="669" width="18" height="12" rx="0" ry="0" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+<text x="287.0" y="675" class="fig-legend-text">Box</text>
+<rect x="327.0" y="669" width="18" height="12" rx="8" ry="8" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+<text x="349.0" y="675" class="fig-legend-text">Rounded</text>
+<path d="M 389.0 677 L 389.0 673 A 9.0 8 0 0 0 407.0 673 L 407.0 677 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+<ellipse cx="398.0" cy="677" rx="9.0" ry="8" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+<path d="M 389.0 673 A 9.0 8 0 0 0 407.0 673" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4,3"/>
+<path d="M 389.0 677 A 9.0 8 0 0 0 407.0 677" fill="none" stroke="#94a3b8" stroke-width="2"/>
+<text x="411.0" y="675" class="fig-legend-text">Cylinder</text>
+<polygon points="460.0,669 469.0,675.0 460.0,681 451.0,675.0" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+<text x="473.0" y="675" class="fig-legend-text">Diamond</text>
+<ellipse cx="522.0" cy="675.0" rx="9.0" ry="6.0" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+<text x="535.0" y="675" class="fig-legend-text">Circle</text>
+<polygon points="577.7,669 593.0,669 590.3,681 575.0,681" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+<text x="597.0" y="675" class="fig-legend-text">Para.</text>
+<polygon points="646.00,669.00 647.41,673.06 651.71,673.15 648.28,675.74 649.53,679.85 646.00,677.40 642.47,679.85 643.72,675.74 640.29,673.15 644.59,673.06" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+<text x="659.0" y="675" class="fig-legend-text">Star</text>
+</g>
+</svg>
