@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoSciFigure — Survey of Automated Scientific Figure Generation (2026)</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent2: #3fb950;
+    --accent3: #d2a8ff;
+    --accent4: #f78166;
+    --tag-bg: #1c2333;
+    --tag-text: #79c0ff;
+    --code-bg: #1c2128;
+    --hl: #f0f6fc;
+    --gradient-1: linear-gradient(135deg, #58a6ff, #3fb950);
+    --gradient-2: linear-gradient(135deg, #d2a8ff, #f78166);
+    --gradient-3: linear-gradient(135deg, #f0883e, #da3633);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+  .container { max-width: 1300px; margin: 0 auto; padding: 0 24px; }
+
+  /* Header */
+  header {
+    padding: 80px 0 48px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(88,166,255,0.06) 0%, transparent 100%);
+  }
+  header h1 {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+  header .subtitle {
+    font-size: 18px;
+    color: var(--text-muted);
+    max-width: 700px;
+    margin: 0 auto 32px;
+  }
+  header .meta {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  header .meta span {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* Navigation */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,17,23,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+  }
+  nav .nav-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+  }
+  nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    white-space: nowrap;
+    padding: 6px 14px;
+    border-radius: 16px;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+  }
+  nav a:hover { color: var(--hl); background: var(--card); border-color: var(--border); }
+
+  /* Sections */
+  section { padding: 56px 0; }
+  section + section { border-top: 1px solid var(--border); }
+  h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--hl);
+    letter-spacing: -0.3px;
+  }
+  h2 .emoji { font-size: 26px; margin-right: 8px; }
+  .section-desc { color: var(--text-muted); margin-bottom: 32px; font-size: 15px; }
+
+  h3 {
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--hl);
+    margin: 28px 0 12px;
+  }
+  h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 20px 0 8px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: var(--accent); }
+  .card.accent-green  { border-left: 3px solid var(--accent2); }
+  .card.accent-blue   { border-left: 3px solid var(--accent); }
+  .card.accent-purple { border-left: 3px solid var(--accent3); }
+  .card.accent-orange { border-left: 3px solid var(--accent4); }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .card-header h3 { margin: 0; font-size: 18px; }
+  .venue-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 10px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .venue-tag.iclr  { color: #3fb950; background: rgba(63,185,80,0.12); }
+  .venue-tag.cvpr  { color: #58a6ff; background: rgba(88,166,255,0.12); }
+  .venue-tag.acl   { color: #d2a8ff; background: rgba(210,168,255,0.12); }
+  .venue-tag.nature{ color: #f78166; background: rgba(247,129,102,0.12); }
+  .venue-tag.arxiv { color: #8b949e; background: rgba(139,148,158,0.12); }
+
+  /* Author list */
+  .authors { color: var(--text-muted); font-size: 13px; margin-bottom: 8px; }
+  .affiliations { color: var(--accent3); font-size: 12px; margin-bottom: 12px; }
+
+  /* Tags */
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+  .tag {
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 10px;
+    background: var(--code-bg);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; margin: 20px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { color: var(--hl); font-weight: 600; background: var(--card); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { color: var(--text); }
+  tr:hover td { background: rgba(88,166,255,0.03); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: 32px; margin: 24px 0; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .tl-item { position: relative; margin-bottom: 28px; }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .tl-item.core::before { background: var(--accent2); width: 14px; height: 14px; left: -29px; }
+  .tl-date { font-size: 12px; color: var(--text-muted); margin-bottom: 2px; }
+  .tl-title { font-weight: 600; color: var(--hl); }
+  .tl-venue { font-size: 12px; color: var(--accent); }
+  .tl-desc { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+  /* Stats */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 36px;
+    font-weight: 800;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+  /* Grid layout */
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+
+  /* Citations */
+  .ref-list { font-size: 13px; counter-reset: ref; }
+  .ref-list li {
+    counter-increment: ref;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+  }
+  .ref-list li::before {
+    content: "[" counter(ref) "]";
+    color: var(--accent);
+    font-weight: 600;
+    white-space: nowrap;
+    min-width: 32px;
+  }
+  .ref-list a { color: var(--accent); text-decoration: none; }
+  .ref-list a:hover { text-decoration: underline; }
+  .ref-list .ref-meta { color: var(--text-muted); font-size: 12px; }
+
+  /* Comparison matrix */
+  .comparison td:first-child { font-weight: 600; white-space: nowrap; }
+  .comparison .win { color: var(--accent2); font-weight: 600; }
+  .comparison .mid { color: var(--accent4); }
+
+  /* Trends */
+  .trend-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .trend-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .trend-card .icon { font-size: 28px; margin-bottom: 8px; }
+  .trend-card h4 { color: var(--hl); margin: 0 0 8px; font-size: 15px; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    header h1 { font-size: 28px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .card-header { flex-direction: column; }
+  }
+
+  /* Links inside paragraphs */
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Code-ish */
+  code {
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--accent3);
+  }
+  .bibtex {
+    font-family: 'Consolas', 'Fira Code', monospace;
+    font-size: 12px;
+    background: var(--code-bg);
+    padding: 16px;
+    border-radius: 8px;
+    margin: 12px 0;
+    overflow-x: auto;
+    color: var(--text);
+    border: 1px solid var(--border);
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  /* Architecture diagram placeholder */
+  .arch-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 16px;
+    background: var(--code-bg);
+    border-radius: 10px;
+    border: 1px dashed var(--border);
+    margin: 16px 0;
+  }
+  .arch-node {
+    background: var(--card);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 12px;
+    color: var(--tag-text);
+    white-space: nowrap;
+  }
+  .arch-arrow { color: var(--accent2); font-size: 16px; }
+  .arch-node.critic { border-color: var(--accent4); color: var(--accent4); }
+  .arch-node.output { border-color: var(--accent2); color: var(--accent2); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>AutoSciFigure: Automated Scientific Figure Generation</h1>
+    <p class="subtitle">
+      A comprehensive survey covering automated academic illustration, publication-ready figure generation,
+      and vector animation tokenization — anchored on three landmark 2026 papers and their broader research ecosystem.
+    </p>
+    <div class="meta">
+      <span>Survey Period: Jan–May 2026</span>
+      <span>Papers Reviewed: 22+</span>
+      <span>Focus: AutoSciFigure</span>
+      <span>Updated: May 17, 2026</span>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#overview">Overview</a>
+    <a href="#paperbanana">PaperBanana</a>
+    <a href="#autofigure">AutoFigure</a>
+    <a href="#lottiegpt">LottieGPT</a>
+    <a href="#comparison">Comparison</a>
+    <a href="#related">Related Work</a>
+    <a href="#timeline">Timeline</a>
+    <a href="#trends">Trends</a>
+    <a href="#references">References</a>
+  </div>
+</nav>
+
+<!-- ===================== SECTION 1: OVERVIEW ===================== -->
+<section id="overview">
+  <div class="container">
+    <h2><span class="emoji">📊</span> Executive Overview</h2>
+    <p class="section-desc">
+      The automated generation of scientific figures has emerged as a critical frontier in AI-assisted research.
+      2026 marks a watershed moment: multiple high-impact papers at ICLR, CVPR, and ACL demonstrate
+      that multi-agent LLM frameworks can produce publication-quality illustrations, while the broader AI Scientist
+      revolution demands automated figure generation as an essential component of fully autonomous research pipelines.
+    </p>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Anchor Papers</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">22+</div>
+        <div class="stat-label">Related Papers (2026)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Top Venues (ICLR/CVPR/ACL/Nature)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">66.7%</div>
+        <div class="stat-label">Best Publication-Ready Rate</div>
+      </div>
+    </div>
+
+    <p>
+      This survey is anchored on <strong>three representative 2026 papers</strong> that span the spectrum from
+      raster diagram generation to editable vector illustration to animation synthesis:
+    </p>
+
+    <div class="grid-3" style="margin-top:20px;">
+      <div class="card accent-green">
+        <h4>PaperBanana</h4>
+        <p style="font-size:13px;color:var(--text-muted);">
+          Multi-agent raster figure generation with retrieval-augmented planning and iterative self-critique.
+          PKU × Google Cloud AI. <strong>arXiv:2601.23265</strong>.
+        </p>
+      </div>
+      <div class="card accent-blue">
+        <h4>AutoFigure</h4>
+        <p style="font-size:13px;color:var(--text-muted);">
+          Dual-agent Review-Refine loop for editable SVG illustrations.
+          Westlake University. <strong>ICLR 2026</strong>.
+        </p>
+      </div>
+      <div class="card accent-purple">
+        <h4>LottieGPT</h4>
+        <p style="font-size:13px;color:var(--text-muted);">
+          Autoregressive tokenization and generation of vector animations.
+          Tsinghua × BAAI. <strong>CVPR 2026</strong>.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 2: PAPERBANANA ===================== -->
+<section id="paperbanana">
+  <div class="container">
+    <h2><span class="emoji">🍌</span> PaperBanana</h2>
+    <p class="section-desc">
+      <em>Automating Academic Illustration for AI Scientists</em> — A multi-agent framework
+      that generates publication-quality methodology diagrams and statistical plots from paper text.
+    </p>
+
+    <div class="card accent-green">
+      <div class="card-header">
+        <div>
+          <h3>PaperBanana: Automating Academic Illustration for AI Scientists</h3>
+          <div class="authors">Dawei Zhu, Rui Meng, Yale Song, Xiyu Wei, Sujian Li, Tomas Pfister, Jinsung Yoon</div>
+          <div class="affiliations">Peking University &amp; Google Cloud AI Research</div>
+        </div>
+        <span class="venue-tag arxiv">arXiv 2601.23265</span>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag">Multi-Agent</span>
+        <span class="tag">Raster Output</span>
+        <span class="tag">VLM-as-Judge</span>
+        <span class="tag">Self-Critique</span>
+        <span class="tag">Retrieval-Augmented</span>
+      </div>
+
+      <h4>Architecture: 5-Agent Pipeline</h4>
+      <div class="arch-box">
+        <span class="arch-node">Retriever</span><span class="arch-arrow">→</span>
+        <span class="arch-node">Planner</span><span class="arch-arrow">→</span>
+        <span class="arch-node">Stylist</span><span class="arch-arrow">→</span>
+        <span class="arch-node">Visualizer</span><span class="arch-arrow">⟲</span>
+        <span class="arch-node critic">Critic</span><span class="arch-arrow">→</span>
+        <span class="arch-node output">Figure</span>
+      </div>
+
+      <table>
+        <tr><th>Agent</th><th>Role</th></tr>
+        <tr><td><strong>Retriever</strong></td><td>Finds semantically relevant reference diagrams from curated corpora to ground the generation</td></tr>
+        <tr><td><strong>Planner</strong></td><td>Translates method descriptions + captions into structured content plans with spatial layout</td></tr>
+        <tr><td><strong>Stylist</strong></td><td>Applies NeurIPS-style aesthetic conventions: color palettes, typography, iconography</td></tr>
+        <tr><td><strong>Visualizer</strong></td><td>Calls image generation models (Gemini-3-Pro, Nano-Banana-Pro) to render the final PNG</td></tr>
+        <tr><td><strong>Critic</strong></td><td>Iterative self-critique loop: scores output on 4 dimensions, feeds revision instructions back to Visualizer</td></tr>
+      </table>
+
+      <h4>Key Results (PaperBananaBench: 292 NeurIPS 2025 test cases)</h4>
+      <table>
+        <tr><th>Metric</th><th>Improvement</th><th>Description</th></tr>
+        <tr><td>Faithfulness</td><td class="win">+23.7%</td><td>Factual alignment with source content</td></tr>
+        <tr><td>Conciseness</td><td class="win">+18.4%</td><td>Absence of redundant or irrelevant elements</td></tr>
+        <tr><td>Readability</td><td class="win">+31.2%</td><td>Clarity of visual hierarchy and typography</td></tr>
+        <tr><td>Aesthetics</td><td class="win">+27.1%</td><td>Overall visual appeal per academic standards</td></tr>
+      </table>
+
+      <p style="margin-top:16px; font-size:13px; color:var(--text-muted);">
+        <strong>Limitations:</strong> Output is raster (4K PNG), not vector — limiting downstream editing.
+        Fine-grained faithfulness still imperfect (arrow offsets, boundary blur).
+        Human verification still required for publication use.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 3: AUTOFIGURE ===================== -->
+<section id="autofigure">
+  <div class="container">
+    <h2><span class="emoji">🎨</span> AutoFigure</h2>
+    <p class="section-desc">
+      <em>Generating and Refining Publication-Ready Scientific Illustrations</em> —
+      An agentic framework with iterative Review-Refine loop, accepted at ICLR 2026.
+      Produces <strong>editable SVG/mxGraph</strong> output.
+    </p>
+
+    <div class="card accent-blue">
+      <div class="card-header">
+        <div>
+          <h3>AutoFigure: Generating and Refining Publication-Ready Scientific Illustrations</h3>
+          <div class="authors">Minjun Zhu, Zhen Lin, Yixuan Weng, Panzhong Lu, Qiujie Xie, Yifan Wei, Sifan Liu, Qiyao Sun, Yue Zhang</div>
+          <div class="affiliations">Westlake University (西湖大学)</div>
+        </div>
+        <span class="venue-tag iclr">ICLR 2026</span>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag">Dual-Agent</span>
+        <span class="tag">SVG Output</span>
+        <span class="tag">Review-Refine Loop</span>
+        <span class="tag">FigureBench</span>
+      </div>
+
+      <h4>Architecture: Reasoned Rendering Paradigm</h4>
+      <div class="arch-box">
+        <span class="arch-node">Long Text Input</span><span class="arch-arrow">→</span>
+        <span class="arch-node">Generator Agent</span><span class="arch-arrow">⟲</span>
+        <span class="arch-node critic">Critic Agent</span><span class="arch-arrow">→</span>
+        <span class="arch-node output">SVG / mxGraph</span>
+      </div>
+      <p style="font-size:13px; color:var(--text-muted); margin-top:8px;">
+        Generator creates initial SVG/mxGraph XML from text → Critic scores (0–10) + provides feedback →
+        Iterate until publication-ready. Decouples semantic layout planning from aesthetic rendering.
+      </p>
+
+      <h4>FigureBench Dataset (3,300 text–figure pairs)</h4>
+      <table>
+        <tr><th>Category</th><th>Samples</th><th>Avg. Tokens</th><th>Win Rate</th></tr>
+        <tr><td>Paper</td><td>3,200</td><td class="num">12,732</td><td class="win">53%</td></tr>
+        <tr><td>Blog</td><td>20</td><td class="num">4,047</td><td class="win">83.3%</td></tr>
+        <tr><td>Survey</td><td>40</td><td class="num">2,179</td><td class="win">76%</td></tr>
+        <tr><td>Textbook</td><td>40</td><td class="num">352</td><td class="win">97.5%</td></tr>
+      </table>
+
+      <h4>Key Results</h4>
+      <table>
+        <tr><th>Metric</th><th>AutoFigure</th><th>Best Baseline</th></tr>
+        <tr><td>Blog Score</td><td class="win">7.60</td><td>5.17</td></tr>
+        <tr><td>Survey Score</td><td class="win">6.99</td><td>6.16</td></tr>
+        <tr><td>Textbook Score</td><td class="win">8.00</td><td>7.33</td></tr>
+        <tr><td>Paper Score</td><td class="win">7.03</td><td>6.48</td></tr>
+        <tr><td>Human Expert Win Rate</td><td class="win">83.3%</td><td>—</td></tr>
+        <tr><td>Experts Deemed Camera-Ready</td><td class="win">66.7%</td><td>—</td></tr>
+      </table>
+
+      <p style="margin-top:16px; font-size:13px; color:var(--text-muted);">
+        <strong>Cost:</strong> ~$0.20/figure (cloud API, ~17 min) or near-zero (local open-source, ~9 min).
+        <strong>Successor:</strong> <em>AutoFigure-Edit</em> (arXiv:2603.06674) adds SAM3 segmentation for fully editable SVGs
+        and style transfer from reference figures. Live platform at <a href="https://deepscientist.cc">deepscientist.cc</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 4: LOTTIEGPT ===================== -->
+<section id="lottiegpt">
+  <div class="container">
+    <h2><span class="emoji">🎬</span> LottieGPT</h2>
+    <p class="section-desc">
+      <em>Tokenizing Vector Animation for Autoregressive Generation</em> —
+      The <strong>first framework</strong> to tokenize and autoregressively generate editable vector animations,
+      accepted at CVPR 2026. Extends the AutoSciFigure pipeline into the temporal domain.
+    </p>
+
+    <div class="card accent-purple">
+      <div class="card-header">
+        <div>
+          <h3>LottieGPT: Tokenizing Vector Animation for Autoregressive Generation</h3>
+          <div class="authors">Junhao Chen, Kejun Gao, Yuehan Cui, Mingze Sun, Mingjin Chen, Shaohui Wang, Xiaoxiao Long, Fei Ma, Qi Tian, Ruqi Huang, Hao Zhao</div>
+          <div class="affiliations">Tsinghua University, BAAI, Hong Kong Polytechnic University, Nanjing University, Guangdong Lab of AI &amp; Digital Economy (SZ)</div>
+        </div>
+        <span class="venue-tag cvpr">CVPR 2026</span>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag">Autoregressive</span>
+        <span class="tag">Vector Animation</span>
+        <span class="tag">Lottie Format</span>
+        <span class="tag">Tokenization</span>
+        <span class="tag">Qwen-VL</span>
+        <span class="tag">Multi-Modal</span>
+      </div>
+
+      <h4>Architecture: Three-Stage Pipeline</h4>
+      <div class="arch-box">
+        <span class="arch-node">Lottie Tokenizer</span><span class="arch-arrow">→</span>
+        <span class="arch-node">LottieAnimation-660K</span><span class="arch-arrow">→</span>
+        <span class="arch-node">LottieGPT (Qwen-VL)</span><span class="arch-arrow">→</span>
+        <span class="arch-node output">Editable Animation</span>
+      </div>
+
+      <div class="grid-2" style="margin-top:20px;">
+        <div>
+          <h4>Key Components</h4>
+          <table>
+            <tr><th>Component</th><th>Description</th></tr>
+            <tr>
+              <td><strong>Lottie Tokenizer</strong></td>
+              <td>Encodes layered geometric primitives (shapes, paths), transforms, and keyframe motion from Lottie JSON into compact semantic token sequences. ~34% sequence length reduction via JSON simplification.</td>
+            </tr>
+            <tr>
+              <td><strong>LottieAnimation-660K</strong></td>
+              <td>660K real-world Lottie animations + 15M static Lottie images. Largest vector animation dataset. ~608 hours of animation; avg 3.26 sec / 104.7 frames. Captions via BLIP-2 + Qwen2.5-VL 32B.</td>
+            </tr>
+            <tr>
+              <td><strong>LottieGPT Model</strong></td>
+              <td>Fine-tuned Qwen-VL that autoregressively generates Lottie token sequences from text, images, or keyframes. Outputs fully editable, resolution-independent vector animations.</td>
+            </tr>
+          </table>
+        </div>
+        <div>
+          <h4>Why Lottie Format?</h4>
+          <table>
+            <tr><th>Property</th><th>Advantage</th></tr>
+            <tr><td>JSON-based</td><td>Naturally tokenizable; structured command-parameter format</td></tr>
+            <tr><td>Resolution-independent</td><td>Vector graphics scale to any size without quality loss</td></tr>
+            <tr><td>Editable</td><td>Shapes, colors, motion curves can be modified post-generation</td></tr>
+            <tr><td>Tiny file size</td><td>Typically a few KB vs MB for raster video</td></tr>
+            <tr><td>Web-native</td><td>Renders natively in all browsers, iOS, Android</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <h4 style="margin-top:24px;">Relationship to SciFigure Generation</h4>
+      <p style="font-size:14px;">
+        While LottieGPT targets general vector animation, its tokenization strategy is directly relevant to
+        scientific illustration: animated diagrams (network flows, algorithm visualizations, process animations)
+        are increasingly common in digital publications. The autoregressive tokenization paradigm can be
+        adapted to generate animated scientific figures with temporal dynamics.
+      </p>
+      <p style="font-size:14px; margin-top:8px;">
+        <strong>Related competitor:</strong> <em>OmniLottie</em> (arXiv:2603.02138, CVPR 2026) — parameterized
+        Lottie tokens with MMLottie-2M dataset (2M animations), 97% generation success rate.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 5: COMPARISON ===================== -->
+<section id="comparison">
+  <div class="container">
+    <h2><span class="emoji">⚖️</span> Head-to-Head Comparison</h2>
+    <p class="section-desc">Systematic comparison of the three anchor papers across key technical dimensions.</p>
+
+    <div class="table-wrap">
+      <table class="comparison">
+        <tr><th>Dimension</th><th>PaperBanana</th><th>AutoFigure</th><th>LottieGPT</th></tr>
+        <tr>
+          <td>Output Format</td>
+          <td><span class="mid">Raster (4K PNG)</span></td>
+          <td><span class="win">Editable SVG / mxGraph XML</span></td>
+          <td><span class="win">Editable Lottie JSON (animation)</span></td>
+        </tr>
+        <tr>
+          <td>Agent Architecture</td>
+          <td>5 specialized agents</td>
+          <td>2-agent Review-Refine loop</td>
+          <td>Single autoregressive model</td>
+        </tr>
+        <tr>
+          <td>Iterative Refinement</td>
+          <td><span class="win">Multi-round Critic loop</span></td>
+          <td><span class="win">Score-based review loop</span></td>
+          <td><span class="mid">Single-pass generation</span></td>
+        </tr>
+        <tr>
+          <td>Retrieval-Augmented</td>
+          <td><span class="win">Retriever agent built-in</span></td>
+          <td>Reference style transfer (AutoFigure-Edit)</td>
+          <td><span class="mid">Not applicable</span></td>
+        </tr>
+        <tr>
+          <td>Benchmark</td>
+          <td>PaperBananaBench (292 cases)</td>
+          <td>FigureBench (3,300 pairs)</td>
+          <td>LottieAnimation-660K (660K+15M)</td>
+        </tr>
+        <tr>
+          <td>Evaluation Method</td>
+          <td>VLM-as-Judge (Gemini-3-Pro)</td>
+          <td>Human expert evaluation + scoring</td>
+          <td>Automatic metrics + human eval</td>
+        </tr>
+        <tr>
+          <td>Publication-Ready Rate</td>
+          <td>72.7% human preference</td>
+          <td><span class="win">66.7% camera-ready</span></td>
+          <td>Qualitative SOTA</td>
+        </tr>
+        <tr>
+          <td>Domain Coverage</td>
+          <td>ML/AI papers (NeurIPS)</td>
+          <td>Papers, blogs, surveys, textbooks</td>
+          <td>General animation (UI, motion graphics)</td>
+        </tr>
+        <tr>
+          <td>Venue (2026)</td>
+          <td>arXiv preprint</td>
+          <td><span class="win">ICLR 2026</span></td>
+          <td><span class="win">CVPR 2026</span></td>
+        </tr>
+        <tr>
+          <td>Model Backend</td>
+          <td>Gemini-3-Pro, Nano-Banana-Pro</td>
+          <td>GPT-5.2, GPT-Image-1.5</td>
+          <td>Qwen-VL (fine-tuned)</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 6: RELATED WORK ===================== -->
+<section id="related">
+  <div class="container">
+    <h2><span class="emoji">🔗</span> Related Works &amp; Research Ecosystem</h2>
+    <p class="section-desc">
+      The three anchor papers sit within a rapidly expanding ecosystem. Below we catalog
+      related 2026 works organized by research thrust.
+    </p>
+
+    <!-- Category 1: Extensions & Successors -->
+    <h3>1. Direct Extensions &amp; Successors</h3>
+    <div class="grid-2">
+      <div class="card accent-blue">
+        <div class="card-header">
+          <h3>AutoFigure-Edit</h3>
+          <span class="venue-tag arxiv">arXiv 2603.06674</span>
+        </div>
+        <div class="authors">Zhen Lin, Qiujie Xie, Minjun Zhu et al. (13 authors)</div>
+        <p style="font-size:13px; margin-top:8px;">
+          Extends AutoFigure with SAM3 segmentation, RMBG-2.0 background removal,
+          and a placeholder-to-SVG assembly pipeline for fully editable scientific illustrations.
+          Supports reference-guided style transfer and multi-modal conditioning.
+          <a href="https://github.com/ResearAI/AutoFigure-Edit">GitHub</a>
+        </p>
+      </div>
+
+      <div class="card accent-green">
+        <div class="card-header">
+          <h3>FigAgent</h3>
+          <span class="venue-tag arxiv">arXiv 2603.29590</span>
+        </div>
+        <div class="authors">Zhuoling Li et al.</div>
+        <p style="font-size:13px; margin-top:8px;">
+          Multi-agent framework specifically for AI paper method illustrations.
+          Novel <em>Explore-and-Select</em> drawing strategy mimics human trial-and-error
+          sketching. Encapsulates reusable <em>drawing middlewares</em> that evolve dynamically.
+          <a href="https://zhuolingli.github.io/FigAgent-page-project/">Project Page</a>
+        </p>
+      </div>
+
+      <div class="card accent-purple">
+        <div class="card-header">
+          <h3>OmniLottie</h3>
+          <span class="venue-tag cvpr">CVPR 2026</span>
+        </div>
+        <div class="authors">Yiying Yang et al.</div>
+        <p style="font-size:13px; margin-top:8px;">
+          Competing vector animation framework. Parameterized Lottie token design
+          (command + parameter sequences). MMLottie-2M dataset (2M professional animations).
+          97%+ generation success rate with Qwen2.5-VL fine-tuning.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>ScholarPeer</h3>
+          <span class="venue-tag arxiv">Google Research, Apr 2026</span>
+        </div>
+        <div class="authors">Jinsung Yoon, Tomas Pfister (Google Cloud)</div>
+        <p style="font-size:13px; margin-top:8px;">
+          Sister system to PaperBanana. Multi-agent peer review framework with
+          Sub-domain Historian + Baseline Scout + Q&A Engine. Drastically reduces
+          gap between AI and human review diversity. Part of Google's vision for
+          AI-assisted academic lifecycle.
+        </p>
+      </div>
+    </div>
+
+    <!-- Category 2: Benchmarks & Evaluation -->
+    <h3>2. Benchmarks &amp; Evaluation</h3>
+    <div class="grid-2">
+      <div class="card accent-orange">
+        <div class="card-header">
+          <h3>SciFlow-Bench</h3>
+          <span class="venue-tag acl">ACL 2026 Main</span>
+        </div>
+        <div class="authors">Tong Zhang, Honglin Lin, Zhou Liu, Chong Chen, Wentao Zhang</div>
+        <p style="font-size:13px; margin-top:8px;">
+          Structure-aware evaluation via <em>inverse parsing</em>: converts generated diagrams
+          back into structured graphs, then compares to ground truth. Uses a hierarchical
+          multi-agent system for planning, perception, and structural reasoning.
+          Addresses the "looks right but wrong" problem.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>DiagramBank</h3>
+          <span class="venue-tag arxiv">arXiv 2604.20857</span>
+        </div>
+        <div class="authors">Tingwen Zhang et al.</div>
+        <p style="font-size:13px; margin-top:8px;">
+          89,422 schematic diagrams from top-tier publications with paper metadata.
+          CLIP-based filtering to distinguish schematics from standard plots.
+          RAG codebase for exemplar-conditioned figure synthesis.
+          <a href="https://github.com/csml-rpi/DiagramBank">GitHub</a>
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>SciDraw-6K</h3>
+          <span class="venue-tag arxiv">arXiv 2604.17206</span>
+        </div>
+        <div class="authors">(Multi-institutional)</div>
+        <p style="font-size:13px; margin-top:8px;">
+          6,291 scientific illustrations generated by Gemini models across 11 languages
+          and 8 domains (biomedical, chemistry, materials, electronics, environmental,
+          AI systems, physics). Multilingual benchmark for illustration quality.
+        </p>
+      </div>
+    </div>
+
+    <!-- Category 3: SVG/Vector Generation -->
+    <h3>3. SVG &amp; Vector Graphics Generation</h3>
+    <div class="grid-2">
+      <div class="card accent-purple">
+        <div class="card-header">
+          <h3>IntroSVG</h3>
+          <span class="venue-tag arxiv">arXiv 2603.09312</span>
+        </div>
+        <div class="authors">Feiyu Wang et al.</div>
+        <p style="font-size:13px; margin-top:8px;">
+          Unified VLM that is both generator and critic. SFT for SVG drafting + feedback,
+          DPO with teacher VLM for refinement. Iterative "generate-review-refine" at inference.
+          SOTA on complex SVG structure and semantic alignment.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>VecGlypher</h3>
+          <span class="venue-tag cvpr">CVPR 2026</span>
+        </div>
+        <div class="authors">Xiaoke Huang, Bhavul Gauri et al. (Meta AI)</div>
+        <p style="font-size:13px; margin-top:8px;">
+          Single multimodal LLM that autoregressively emits SVG path tokens from text
+          or image exemplars. Two-stage training: 39K noisy fonts → 2.5K expert-annotated
+          Google Fonts. Avoids raster intermediates entirely.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>HiVG (Hierarchical SVG Tokenization)</h3>
+          <span class="venue-tag arxiv">arXiv 2604.05072</span>
+        </div>
+        <div class="authors">Ximing Xing, Ziteng Xue et al.</div>
+        <p style="font-size:13px; margin-top:8px;">
+          Hierarchical tokenizer decomposing SVG into atomic tokens (structure, commands,
+          coordinates, attributes), then compressing into segment tokens for 63.8% sequence
+          reduction. Hierarchical Mean-Noise initialization to combat coordinate hallucination.
+        </p>
+      </div>
+    </div>
+
+    <!-- Category 4: System & Architecture Generation -->
+    <h3>4. System Architecture &amp; Diagram Generation</h3>
+    <div class="grid-2">
+      <div class="card accent-green">
+        <div class="card-header">
+          <h3>Paper2SysArch</h3>
+          <span class="venue-tag cvpr">CVPR 2026 Findings</span>
+        </div>
+        <div class="authors">Ziyi Guo, Zhou Liu, Wentao Zhang</div>
+        <p style="font-size:13px; margin-top:8px;">
+          Generates system architecture diagrams from scientific papers with explicit
+          structural constraints. Part of the Paper2Any ecosystem.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>SciDoc2Diagrammer-MAF</h3>
+          <span class="venue-tag arxiv">EMNLP 2024 Findings</span>
+        </div>
+        <div class="authors">Ishani Mondal et al.</div>
+        <p style="font-size:13px; margin-top:8px;">
+          Foundational work. Multi-Aspect Feedback refinement strategy for generating
+          scientific diagrams from documents. Introduced SciDoc2DiagramBench.
+          <a href="https://github.com/Ishani-Mondal/SciDoc2DiagramGeneration">GitHub</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Category 5: AI Scientist Systems -->
+    <h3>5. Broader AI Scientist Systems (Context)</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>System</th><th>Venue</th><th>Scope</th><th>Figure Generation Component</th></tr>
+        <tr>
+          <td><strong>The AI Scientist</strong> (Sakana AI / UBC / Oxford)</td>
+          <td><span class="venue-tag nature">Nature Mar 2026</span></td>
+          <td>End-to-end: idea → experiment → figure → paper → review</td>
+          <td>Built-in figure generation pipeline; first AI-authored paper passed human peer review</td>
+        </tr>
+        <tr>
+          <td><strong>DeepScientist</strong> (Westlake University)</td>
+          <td><span class="venue-tag iclr">ICLR 2026</span></td>
+          <td>Autonomous scientific discovery via Bayesian optimization</td>
+          <td>Uses AutoFigure as the figure generation module</td>
+        </tr>
+        <tr>
+          <td><strong>Medical AI Scientist</strong> (CUHK / Stanford / MSR)</td>
+          <td>arXiv Mar 2026</td>
+          <td>Clinical autonomous research with clinician-engineer co-reasoning</td>
+          <td>Generates figures for MICCAI-level papers; 171 cases, 6 modalities</td>
+        </tr>
+        <tr>
+          <td><strong>PARNESS</strong></td>
+          <td><span class="venue-tag arxiv">arXiv 2605.05258</span></td>
+          <td>Declarative pipeline + PDF indexing + cross-run knowledge accumulation</td>
+          <td>Integrates with coding agents for figure generation</td>
+        </tr>
+        <tr>
+          <td><strong>AI CFD Scientist</strong></td>
+          <td><span class="venue-tag arxiv">arXiv 2605.06607</span></td>
+          <td>Computational fluid dynamics discovery with VLM physics verification</td>
+          <td>Generates flow visualization figures and methodology diagrams</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Category 6: Surveys & Policy -->
+    <h3>6. Surveys &amp; Policy Papers</h3>
+    <div class="card">
+      <div class="card-header">
+        <h3>AI-Generated Figures in Academic Publishing: Policies, Tools, and Practical Guidelines</h3>
+        <span class="venue-tag arxiv">arXiv 2603.16159</span>
+      </div>
+      <div class="authors">Davie Chen</div>
+      <p style="font-size:13px; margin-top:8px;">
+        Surveys policies of Nature, Science, Cell Press, Elsevier, PLOS on AI-generated figures.
+        Proposes best-practice guidelines for transparent, compliant use. Discusses tools like
+        SciDraw and concerns around reproducibility, authorship, and visual misinformation.
+        <strong>The closest existing work to a formal survey paper on AutoSciFigure as of mid-2026.</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 7: TIMELINE ===================== -->
+<section id="timeline">
+  <div class="container">
+    <h2><span class="emoji">📅</span> Publication Timeline (2026)</h2>
+    <p class="section-desc">Chronological emergence of key AutoSciFigure papers in 2026.</p>
+
+    <div class="timeline">
+      <div class="tl-item core">
+        <div class="tl-date">January 30, 2026</div>
+        <div class="tl-title">PaperBanana</div>
+        <div class="tl-venue">arXiv:2601.23265 | PKU × Google Cloud AI</div>
+        <div class="tl-desc">First major 2026 entry: multi-agent raster figure generation with retrieval and self-critique.</div>
+      </div>
+      <div class="tl-item core">
+        <div class="tl-date">February 3–12, 2026</div>
+        <div class="tl-title">AutoFigure</div>
+        <div class="tl-venue">arXiv:2602.03828 → ICLR 2026</div>
+        <div class="tl-desc">Dual-agent SVG generation. FigureBench (3,300 pairs). 66.7% camera-ready rate.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">February 6 – April 1, 2026</div>
+        <div class="tl-title">FigAgent</div>
+        <div class="tl-venue">arXiv:2603.29590</div>
+        <div class="tl-desc">Explore-and-Select drawing strategy with reusable middlewares for method illustration.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">February 10, 2026</div>
+        <div class="tl-title">SciFlow-Bench</div>
+        <div class="tl-venue">arXiv:2602.09809 → ACL 2026 Main</div>
+        <div class="tl-desc">Inverse parsing benchmark for structure-aware diagram evaluation.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">February 2026</div>
+        <div class="tl-title">VecGlypher</div>
+        <div class="tl-venue">arXiv:2602.21461 → CVPR 2026</div>
+        <div class="tl-desc">Meta AI: autoregressive SVG token generation from text/image exemplars.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">March 2, 2026</div>
+        <div class="tl-title">OmniLottie</div>
+        <div class="tl-venue">arXiv:2603.02138 → CVPR 2026</div>
+        <div class="tl-desc">Parameterized Lottie tokens. 2M animations. Competitor to LottieGPT.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">March 3, 2026</div>
+        <div class="tl-title">AutoFigure-Edit</div>
+        <div class="tl-venue">arXiv:2603.06674</div>
+        <div class="tl-desc">Editable SVG via SAM3 + style transfer. Successor to AutoFigure.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">March 2026</div>
+        <div class="tl-title">IntroSVG</div>
+        <div class="tl-venue">arXiv:2603.09312</div>
+        <div class="tl-desc">Unified VLM generator-critic for text-to-SVG with rendering feedback.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">March 2026</div>
+        <div class="tl-title">The AI Scientist (published in Nature)</div>
+        <div class="tl-venue">Nature | Sakana AI / UBC / Oxford</div>
+        <div class="tl-desc">First AI-authored paper passing human peer review. End-to-end figure generation.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">March 2026</div>
+        <div class="tl-title">AI-Generated Figures Survey</div>
+        <div class="tl-venue">arXiv:2603.16159</div>
+        <div class="tl-desc">Publisher policies and practical guidelines for AI figure generation.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">March 24, 2026</div>
+        <div class="tl-title">PaperBanana v2</div>
+        <div class="tl-venue">arXiv:2601.23265 (revision)</div>
+        <div class="tl-desc">Revised version with improved results and extended evaluation.</div>
+      </div>
+      <div class="tl-item core">
+        <div class="tl-date">April 2026</div>
+        <div class="tl-title">LottieGPT</div>
+        <div class="tl-venue">arXiv:2604.11792 → CVPR 2026</div>
+        <div class="tl-desc">First autoregressive vector animation generation. LottieAnimation-660K dataset.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">April 2026</div>
+        <div class="tl-title">HiVG</div>
+        <div class="tl-venue">arXiv:2604.05072</div>
+        <div class="tl-desc">Hierarchical SVG tokenization. 63.8% sequence reduction. Anti-hallucination HMN.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">April 2026</div>
+        <div class="tl-title">ScholarPeer + PaperVizAgent</div>
+        <div class="tl-venue">Google Research Blog</div>
+        <div class="tl-desc">Official Google announcement of academic AI agents for figures and peer review.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">May 2026</div>
+        <div class="tl-title">PARNESS / AI CFD Scientist</div>
+        <div class="tl-venue">arXiv:2605.05258, 2605.06607</div>
+        <div class="tl-desc">Domain-specific AI scientist systems with integrated figure generation.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 8: TRENDS ===================== -->
+<section id="trends">
+  <div class="container">
+    <h2><span class="emoji">🔮</span> Key Trends &amp; Future Directions</h2>
+    <p class="section-desc">Synthesis of major patterns observed across the 2026 AutoSciFigure literature.</p>
+
+    <div class="trend-grid">
+      <div class="trend-card">
+        <div class="icon">🤖</div>
+        <h4>Multi-Agent Architectures</h4>
+        <p style="font-size:13px; color:var(--text-muted);">
+          All major systems (PaperBanana, AutoFigure, FigAgent) adopt multi-agent designs.
+          Specialized agents (Planner, Stylist, Critic, Visualizer) outperform monolithic
+          end-to-end models. The critic agent is the single most important component
+          for output quality.
+        </p>
+      </div>
+      <div class="trend-card">
+        <div class="icon">📐</div>
+        <h4>Raster → Vector Transition</h4>
+        <p style="font-size:13px; color:var(--text-muted);">
+          PaperBanana outputs raster PNG, but AutoFigure-Edit, VecGlypher, HiVG, and
+          LottieGPT all target editable vector formats. The community consensus is clear:
+          <em>editable vectors are the end goal</em>. Raster is a stepping stone.
+        </p>
+      </div>
+      <div class="trend-card">
+        <div class="icon">🔄</div>
+        <h4>Iterative Self-Refinement</h4>
+        <p style="font-size:13px; color:var(--text-muted);">
+          Critique-and-Refine loops are universal. PaperBanana's Critic, AutoFigure's
+          Review-Refine, IntroSVG's generator-critic DPO all converge on the same pattern:
+          generation is necessary but insufficient; refinement is what delivers quality.
+        </p>
+      </div>
+      <div class="trend-card">
+        <div class="icon">📊</div>
+        <h4>Standardized Benchmarks</h4>
+        <p style="font-size:13px; color:var(--text-muted);">
+          The field is maturing from qualitative demos to quantitative benchmarks:
+          PaperBananaBench (292), FigureBench (3,300), SciFlow-Bench (structure-aware),
+          DiagramBank (89K+). VLM-as-Judge and inverse parsing are emerging as
+          scalable evaluation paradigms.
+        </p>
+      </div>
+      <div class="trend-card">
+        <div class="icon">🧩</div>
+        <h4>Tokenization as the Bridge</h4>
+        <p style="font-size:13px; color:var(--text-muted);">
+          LottieGPT, OmniLottie, HiVG, and VecGlypher all converge on the same insight:
+          tokenizing structured visual formats (SVG, Lottie JSON) into autoregressive
+          token sequences enables LLMs to "speak vector graphics." This is the most
+          promising technical direction for editable, high-quality output.
+        </p>
+      </div>
+      <div class="trend-card">
+        <div class="icon">🌐</div>
+        <h4>Integration into AI Scientist Pipelines</h4>
+        <p style="font-size:13px; color:var(--text-muted);">
+          AutoFigure is explicitly part of DeepScientist. PaperBanana pairs with ScholarPeer.
+          The AI Scientist (Nature 2026) includes figure generation as a core module.
+          AutoSciFigure is no longer a standalone task — it's becoming a component
+          of end-to-end autonomous research.
+        </p>
+      </div>
+      <div class="trend-card">
+        <div class="icon">🎯</div>
+        <h4>Structural Correctness over Aesthetics</h4>
+        <p style="font-size:13px; color:var(--text-muted);">
+          SciFlow-Bench's inverse parsing approach and PaperBanana's faithfulness metric
+          reveal that the hardest problem is not making figures beautiful — it's making
+          them <em>structurally correct</em>. Arrow directions, module boundaries, and
+          component relationships are where current systems still fail.
+        </p>
+      </div>
+      <div class="trend-card">
+        <div class="icon">🏛️</div>
+        <h4>Policy &amp; Governance Emerging</h4>
+        <p style="font-size:13px; color:var(--text-muted);">
+          The 2026 survey on AI-generated figures in academic publishing (arXiv:2603.16159)
+          signals that publishers and institutions are beginning to establish policies.
+          Transparency, reproducibility, and author accountability are emerging as
+          key governance requirements.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 9: OPEN CHALLENGES ===================== -->
+<section id="challenges">
+  <div class="container">
+    <h2><span class="emoji">⚠️</span> Open Challenges</h2>
+    <div class="grid-2">
+      <div class="card accent-orange">
+        <h4>Fine-Grained Faithfulness</h4>
+        <p style="font-size:13px; color:var(--text-muted);">
+          Arrow misalignment, missing connections, hallucinated components — all three
+          anchor papers acknowledge that structural precision at the pixel level
+          remains unsolved. Inverse parsing evaluation (SciFlow-Bench) quantifies this gap.
+        </p>
+      </div>
+      <div class="card accent-orange">
+        <h4>Domain Generalization</h4>
+        <p style="font-size:13px; color:var(--text-muted);">
+          Current systems are evaluated primarily on CS/ML papers. Generalization to
+          chemistry (molecular diagrams), biology (pathway figures), physics (Feynman
+          diagrams), and engineering (circuit schematics) is largely unexplored.
+        </p>
+      </div>
+      <div class="card accent-orange">
+        <h4>Text Rendering Accuracy</h4>
+        <p style="font-size:13px; color:var(--text-muted);">
+          AI-generated figures frequently produce garbled, misspelled, or misplaced text
+          labels. OCR-based erase-and-correct post-processing helps but doesn't fully
+          solve the problem.
+        </p>
+      </div>
+      <div class="card accent-orange">
+        <h4>Animation Fidelity</h4>
+        <p style="font-size:13px; color:var(--text-muted);">
+          LottieGPT and OmniLottie can generate animations, but temporal consistency,
+          physical plausibility, and semantic correctness over time remain open problems.
+          No benchmark yet exists for scientific animation quality.
+        </p>
+      </div>
+      <div class="card accent-orange">
+        <h4>Cost &amp; Accessibility</h4>
+        <p style="font-size:13px; color:var(--text-muted);">
+          AutoFigure costs ~$0.20/figure via cloud API; PaperBanana requires Gemini-3-Pro
+          access. Making these systems truly accessible to researchers worldwide
+          (especially in resource-constrained settings) remains a challenge.
+        </p>
+      </div>
+      <div class="card accent-orange">
+        <h4>Evaluation at Scale</h4>
+        <p style="font-size:13px; color:var(--text-muted);">
+          Human expert evaluation is the gold standard but doesn't scale. VLM-as-Judge
+          is promising but introduces circularity (using the same VLMs to evaluate VLM output).
+          Structure-aware automated metrics are still nascent.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 10: REFERENCES ===================== -->
+<section id="references">
+  <div class="container">
+    <h2><span class="emoji">📚</span> References</h2>
+    <p class="section-desc">Complete list of papers cited in this survey, organized by relevance.</p>
+
+    <h3>Anchor Papers</h3>
+    <ol class="ref-list">
+      <li>
+        <div>
+          <strong>PaperBanana: Automating Academic Illustration for AI Scientists</strong><br>
+          Dawei Zhu, Rui Meng, Yale Song, Xiyu Wei, Sujian Li, Tomas Pfister, Jinsung Yoon<br>
+          <span class="ref-meta">arXiv:2601.23265, Jan 2026 (v2: Mar 2026). PKU &amp; Google Cloud AI Research.</span><br>
+          <a href="https://arxiv.org/abs/2601.23265">arxiv.org/abs/2601.23265</a>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>AutoFigure: Generating and Refining Publication-Ready Scientific Illustrations</strong><br>
+          Minjun Zhu, Zhen Lin, Yixuan Weng, Panzhong Lu, Qiujie Xie, Yifan Wei, Sifan Liu, Qiyao Sun, Yue Zhang<br>
+          <span class="ref-meta">ICLR 2026. arXiv:2602.03828, Feb 2026. Westlake University.</span><br>
+          <a href="https://arxiv.org/abs/2602.03828">arxiv.org/abs/2602.03828</a> |
+          <a href="https://openreview.net/forum?id=5N3z9JQJKq">OpenReview</a>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>LottieGPT: Tokenizing Vector Animation for Autoregressive Generation</strong><br>
+          Junhao Chen, Kejun Gao, Yuehan Cui, Mingze Sun, Mingjin Chen, Shaohui Wang, Xiaoxiao Long, Fei Ma, Qi Tian, Ruqi Huang, Hao Zhao<br>
+          <span class="ref-meta">CVPR 2026. arXiv:2604.11792, Apr 2026. Tsinghua, BAAI, PolyU, NJU.</span><br>
+          <a href="https://arxiv.org/abs/2604.11792">arxiv.org/abs/2604.11792</a> |
+          <a href="https://lottiegpt.github.io/">Project Page</a>
+        </div>
+      </li>
+    </ol>
+
+    <h3>Extensions &amp; Successors</h3>
+    <ol class="ref-list" start="4">
+      <li>
+        <div>
+          <strong>AutoFigure-Edit: Generating Editable Scientific Illustration</strong><br>
+          Zhen Lin, Qiujie Xie, Minjun Zhu et al. (13 authors)<br>
+          <span class="ref-meta">arXiv:2603.06674, Mar 2026. Westlake University.</span><br>
+          <a href="https://arxiv.org/abs/2603.06674">arxiv.org/abs/2603.06674</a> |
+          <a href="https://github.com/ResearAI/AutoFigure-Edit">GitHub</a>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>FigAgent: Towards Automatic Method Illustration Figure Generation for AI Scientific Papers</strong><br>
+          Zhuoling Li et al.<br>
+          <span class="ref-meta">arXiv:2603.29590, Feb–Apr 2026 (v2: "Automatic Method Illustration Generation... via Drawing Middleware Creation, Evolution, and Orchestration").</span><br>
+          <a href="https://arxiv.org/abs/2603.29590">arxiv.org/abs/2603.29590</a>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>OmniLottie: Generating Vector Animations via Parameterized Lottie Tokens</strong><br>
+          Yiying Yang et al.<br>
+          <span class="ref-meta">CVPR 2026. arXiv:2603.02138, Mar 2026.</span><br>
+          <a href="https://arxiv.org/abs/2603.02138">arxiv.org/abs/2603.02138</a>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Improving the Academic Workflow: Introducing Two AI Agents for Better Figures and Peer Review</strong><br>
+          Jinsung Yoon, Tomas Pfister (Google Research)<br>
+          <span class="ref-meta">Google Research Blog, Apr 2026. Announces PaperVizAgent + ScholarPeer.</span><br>
+          <a href="https://research.google/blog/improving-the-academic-workflow-introducing-two-ai-agents-for-better-figures-and-peer-review/">Google Research Blog</a>
+        </div>
+      </li>
+    </ol>
+
+    <h3>Benchmarks &amp; Evaluation</h3>
+    <ol class="ref-list" start="8">
+      <li>
+        <div>
+          <strong>SciFlow-Bench: Evaluating Structure-Aware Scientific Diagram Generation via Inverse Parsing</strong><br>
+          Tong Zhang, Honglin Lin, Zhou Liu, Chong Chen, Wentao Zhang<br>
+          <span class="ref-meta">ACL 2026 Main. arXiv:2602.09809, Feb 2026.</span><br>
+          <a href="https://arxiv.org/abs/2602.09809">arxiv.org/abs/2602.09809</a>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>DiagramBank: A Large-scale Dataset of Diagram Design Exemplars with Paper Metadata for Retrieval-Augmented Generation</strong><br>
+          Tingwen Zhang et al.<br>
+          <span class="ref-meta">arXiv:2604.20857, Feb 2026.</span><br>
+          <a href="https://arxiv.org/abs/2604.20857">arxiv.org/abs/2604.20857</a>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>SciDraw-6K: A Multilingual Scientific Illustration Dataset Generated by Google Gemini</strong><br>
+          <span class="ref-meta">arXiv:2604.17206, Apr 2026.</span><br>
+          <a href="https://arxiv.org/abs/2604.17206">arxiv.org/abs/2604.17206</a>
+        </div>
+      </li>
+    </ol>
+
+    <h3>SVG &amp; Vector Graphics Generation</h3>
+    <ol class="ref-list" start="11">
+      <li>
+        <div>
+          <strong>IntroSVG: Learning from Rendering Feedback for Text-to-SVG Generation via an Introspective Generator-Critic Framework</strong><br>
+          Feiyu Wang et al.<br>
+          <span class="ref-meta">arXiv:2603.09312, Mar 2026.</span><br>
+          <a href="https://arxiv.org/abs/2603.09312">arxiv.org/abs/2603.09312</a>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>VecGlypher: Unified Vector Glyph Generation with Language Models</strong><br>
+          Xiaoke Huang, Bhavul Gauri et al. (Meta AI)<br>
+          <span class="ref-meta">CVPR 2026. arXiv:2602.21461, Feb 2026.</span><br>
+          <a href="https://arxiv.org/abs/2602.21461">arxiv.org/abs/2602.21461</a>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Hierarchical SVG Tokenization: Learning Compact Visual Programs for Scalable Vector Graphics Modeling (HiVG)</strong><br>
+          Ximing Xing, Ziteng Xue et al.<br>
+          <span class="ref-meta">arXiv:2604.05072, Apr 2026.</span><br>
+          <a href="https://arxiv.org/abs/2604.05072">arxiv.org/abs/2604.05072</a>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Paper2SysArch: Structure-Constrained System Architecture Generation from Scientific Papers</strong><br>
+          Ziyi Guo, Zhou Liu, Wentao Zhang<br>
+          <span class="ref-meta">CVPR 2026 Findings. arXiv:2511.18036, 2025.</span><br>
+          <a href="https://arxiv.org/abs/2511.18036">arxiv.org/abs/2511.18036</a>
+        </div>
+      </li>
+    </ol>
+
+    <h3>AI Scientist Systems</h3>
+    <ol class="ref-list" start="15">
+      <li>
+        <div>
+          <strong>Towards End-to-End Automation of AI Research (The AI Scientist)</strong><br>
+          Chris Lu, Cong Lu et al. (Sakana AI / UBC / Oxford)<br>
+          <span class="ref-meta">Nature, Mar 2026. Original arXiv:2408.06292, Aug 2024.</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>DeepScientist: Advancing Frontier-Pushing Scientific Findings Progressively</strong><br>
+          Yixuan Weng, Minjun Zhu, Qiujie Xie, QiYao Sun, Zhen Lin, Sifan Liu, Yue Zhang<br>
+          <span class="ref-meta">ICLR 2026. Westlake University.</span><br>
+          <a href="https://iclr.cc/virtual/2026/poster/10008492">ICLR 2026</a>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Towards a Medical AI Scientist</strong><br>
+          (CUHK / Lehigh / Stanford / Microsoft Research)<br>
+          <span class="ref-meta">arXiv, Mar 2026. 171 cases, 6 modalities, MICCAI-level generation.</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>PARNESS: A Paper Harness for End-to-End Automated Scientific Research</strong><br>
+          <span class="ref-meta">arXiv:2605.05258, May 2026.</span><br>
+          <a href="https://arxiv.org/abs/2605.05258">arxiv.org/abs/2605.05258</a>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>AI CFD Scientist: Toward Open-Ended Computational Fluid Dynamics Discovery with Physics-Aware AI Agents</strong><br>
+          <span class="ref-meta">arXiv:2605.06607, May 2026.</span><br>
+          <a href="https://arxiv.org/abs/2605.06607">arxiv.org/abs/2605.06607</a>
+        </div>
+      </li>
+    </ol>
+
+    <h3>Surveys &amp; Policy</h3>
+    <ol class="ref-list" start="20">
+      <li>
+        <div>
+          <strong>AI-Generated Figures in Academic Publishing: Policies, Tools, and Practical Guidelines</strong><br>
+          Davie Chen<br>
+          <span class="ref-meta">arXiv:2603.16159, Mar 2026.</span><br>
+          <a href="https://arxiv.org/abs/2603.16159">arxiv.org/abs/2603.16159</a>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>AI-Assisted Scientific Illustration in Biomedical Research: A Practical Taxonomy and Prompt Engineering Guide</strong><br>
+          <span class="ref-meta">ScienceOpen, 2026. Analysis of 2,792 real-world use cases.</span>
+        </div>
+      </li>
+    </ol>
+
+    <h3>Foundational</h3>
+    <ol class="ref-list" start="22">
+      <li>
+        <div>
+          <strong>SciDoc2Diagrammer-MAF: Towards Generation of Scientific Diagrams from Documents guided by Multi-Aspect Feedback Refinement</strong><br>
+          Ishani Mondal et al.<br>
+          <span class="ref-meta">EMNLP 2024 Findings. arXiv:2409.19242.</span><br>
+          <a href="https://arxiv.org/abs/2409.19242">arxiv.org/abs/2409.19242</a>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>
+      AutoSciFigure Survey — Compiled May 2026 | Focus: Automated Scientific Figure Generation<br>
+      Contact for corrections or additions. All paper links verified as of May 17, 2026.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
