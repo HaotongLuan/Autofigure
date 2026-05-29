@@ -1,0 +1,232 @@
+{
+  "title": "Transformer Architecture",
+  "figure_type": "model_architecture",
+  "nodes": [
+    {
+      "id": "input",
+      "label": "Input\nTokens",
+      "type": "box",
+      "x": 30,
+      "y": 280,
+      "width": 100,
+      "height": 60,
+      "color": "#e8f4fd"
+    },
+    {
+      "id": "embed",
+      "label": "Input\nEmbedding",
+      "type": "rounded_box",
+      "x": 30,
+      "y": 380,
+      "width": 100,
+      "height": 60,
+      "color": "#e8f4fd"
+    },
+    {
+      "id": "posenc",
+      "label": "Positional\nEncoding",
+      "type": "box",
+      "x": 30,
+      "y": 470,
+      "width": 100,
+      "height": 60,
+      "color": "#fef3c7"
+    },
+    {
+      "id": "enc1",
+      "label": "Encoder\nLayer 1",
+      "type": "rounded_box",
+      "x": 200,
+      "y": 340,
+      "width": 120,
+      "height": 60,
+      "color": "#dbeafe"
+    },
+    {
+      "id": "encN",
+      "label": "Encoder\nLayer N=6",
+      "type": "rounded_box",
+      "x": 200,
+      "y": 480,
+      "width": 120,
+      "height": 60,
+      "color": "#dbeafe"
+    },
+    {
+      "id": "enc_out",
+      "label": "Encoder\nOutput",
+      "type": "parallelogram",
+      "x": 390,
+      "y": 410,
+      "width": 110,
+      "height": 60,
+      "color": "#e0e7ff"
+    },
+    {
+      "id": "dec1",
+      "label": "Decoder\nLayer 1",
+      "type": "rounded_box",
+      "x": 560,
+      "y": 340,
+      "width": 120,
+      "height": 60,
+      "color": "#dcfce7"
+    },
+    {
+      "id": "decN",
+      "label": "Decoder\nLayer N=6",
+      "type": "rounded_box",
+      "x": 560,
+      "y": 480,
+      "width": 120,
+      "height": 60,
+      "color": "#dcfce7"
+    },
+    {
+      "id": "linear",
+      "label": "Linear\nProjection",
+      "type": "box",
+      "x": 740,
+      "y": 380,
+      "width": 100,
+      "height": 50,
+      "color": "#f3e8ff"
+    },
+    {
+      "id": "softmax",
+      "label": "Softmax",
+      "type": "box",
+      "x": 740,
+      "y": 460,
+      "width": 100,
+      "height": 50,
+      "color": "#f3e8ff"
+    },
+    {
+      "id": "output",
+      "label": "Output\nProbabilities",
+      "type": "box",
+      "x": 740,
+      "y": 540,
+      "width": 100,
+      "height": 60,
+      "color": "#fef2f2"
+    }
+  ],
+  "edges": [
+    {
+      "from": "input",
+      "to": "embed",
+      "label": "",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "embed",
+      "to": "posenc",
+      "label": "+",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "posenc",
+      "to": "enc1",
+      "label": "",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "enc1",
+      "to": "encN",
+      "label": "×N",
+      "style": "dashed",
+      "direction": "forward"
+    },
+    {
+      "from": "encN",
+      "to": "enc_out",
+      "label": "",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "enc_out",
+      "to": "dec1",
+      "label": "cross-attn",
+      "style": "dashed",
+      "direction": "forward"
+    },
+    {
+      "from": "enc_out",
+      "to": "decN",
+      "label": "cross-attn",
+      "style": "dashed",
+      "direction": "forward"
+    },
+    {
+      "from": "dec1",
+      "to": "decN",
+      "label": "×N",
+      "style": "dashed",
+      "direction": "forward"
+    },
+    {
+      "from": "decN",
+      "to": "linear",
+      "label": "",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "linear",
+      "to": "softmax",
+      "label": "",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "softmax",
+      "to": "output",
+      "label": "",
+      "style": "solid",
+      "direction": "forward"
+    }
+  ],
+  "groups": [
+    {
+      "label": "Encoder Stack (N=6)",
+      "nodes": [
+        "enc1",
+        "encN"
+      ],
+      "bounds": {
+        "x": 180,
+        "y": 300,
+        "width": 170,
+        "height": 280
+      },
+      "color": "#eff6ff"
+    },
+    {
+      "label": "Decoder Stack (N=6)",
+      "nodes": [
+        "dec1",
+        "decN"
+      ],
+      "bounds": {
+        "x": 540,
+        "y": 300,
+        "width": 170,
+        "height": 280
+      },
+      "color": "#f0fdf4"
+    }
+  ],
+  "layout": {
+    "type": "left-to-right",
+    "spacing": {
+      "horizontal": 40,
+      "vertical": 70
+    }
+  }
+}

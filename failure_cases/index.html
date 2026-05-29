@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoFigure Failure Case 复现</title>
+<style>
+  body {
+    font-family: Arial, "Microsoft YaHei", sans-serif;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 20px;
+    line-height: 1.7;
+    color: #222;
+    background: #fff;
+    font-size: 15px;
+  }
+  h1 { font-size: 26px; margin: 0 0 8px; font-weight: 600; }
+  h2 { font-size: 20px; margin: 36px 0 12px; font-weight: 600; }
+  h3 { font-size: 16px; margin: 20px 0 8px; font-weight: 600; }
+  p { margin: 8px 0 14px; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 24px; }
+  th, td { border: 1px solid #999; padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { font-weight: 600; background: #f5f5f5; }
+  a { color: #0645ad; text-decoration: underline; }
+  pre { border: 1px solid #bbb; padding: 10px; white-space: pre-wrap; background: #fafafa; font-family: Consolas, "Courier New", monospace; font-size: 13px; max-height: 400px; overflow-y: auto; }
+  .score-table td { text-align: center; width: 14%; }
+  .score-table th { text-align: center; }
+  .issue { border: 1px solid #ccc; padding: 8px 10px; margin: 6px 0; }
+  .svglink { font-weight: 600; }
+</style>
+</head>
+<body>
+
+<h1>AutoFigure Failure Case 复现</h1>
+<p>以下两个 failure case 来自 AutoFigure (ICLR 2026) pipeline 在 FigureBench 上的实际运行结果。
+Pipeline 参数：model=deepseek-chat, max_rounds=1, max_tokens=8000。
+复现日期：2026-05-18。</p>
+
+<h2>Case 1：Transformer 架构图 — 解码器输入完全缺失</h2>
+
+<h3>输入文本</h3>
+<pre>We adopt the Transformer architecture (Vaswani et al., 2017) for our sequence-to-sequence modeling task. The model consists of an encoder stack of N=6 identical layers and a decoder stack of N=6 identical layers. Each encoder layer is composed of two sub-layers: a multi-head self-attention mechanism with h=8 heads, followed by a position-wise fully connected feed-forward network with a hidden dimension of 2048 and ReLU activation. Residual connections wrap around each of these two sub-layers, followed by layer normalization. The decoder layer inserts a third sub-layer between the self-attention and feed-forward stages: a cross-attention (encoder-decoder attention) mechanism that attends to the output of the encoder stack. The self-attention sub-layer in the decoder is masked to prevent positions from attending to subsequent positions during training. Input tokens are first converted to continuous representations via a learned embedding layer of dimension d_model=512, and positional encodings using sine and cosine functions of different frequencies are added to these embeddings before they enter the encoder and decoder stacks. The output of the final decoder layer passes through a linear projection layer followed by a softmax function to produce probability distributions over the target vocabulary of size |V|=37000.</pre>
+
+<h3>评估结果</h3>
+<table class="score-table">
+  <tr><th>结构正确性</th><th>文字准确性</th><th>视觉清晰度</th><th>科学忠实度</th><th>整体质量</th><th>可编辑性</th></tr>
+  <tr><td>2</td><td>9</td><td>7</td><td>2</td><td>3</td><td>9</td></tr>
+</table>
+
+<h3>关键问题</h3>
+<div class="issue"><strong>[HIGH] missing_entity</strong> — 解码器输入（目标 token embedding 和 positional encoding）完全缺失，解码器 stack 没有输入来源。原文明确说明输入 token 经过 embedding 和 positional encoding 后同时进入 encoder 和 decoder。</div>
+<div class="issue"><strong>[HIGH] missing_entity</strong> — 编码器/解码器各层内部的子结构（multi-head self-attention, feed-forward network, residual connections, layer normalization）均未绘制。</div>
+<div class="issue"><strong>[HIGH] wrong_connection</strong> — Positional encoding 只连到了 encoder，原文要求也连到 decoder。</div>
+<div class="issue"><strong>[LOW] layout</strong> — 图例包含未使用的形状（cylinder, diamond, star），产生不必要的视觉噪音。</div>
+
+<h3>输出文件</h3>
+<p>
+  <a href="tc01_output.svg" class="svglink">tc01_output.svg</a> — 生成的 SVG 图 |
+  <a href="tc01_plan.json" class="svglink">tc01_plan.json</a> — 生成的中间 plan JSON<br>
+  生成结果：11 个节点，11 条边，2 个分组（Encoder Stack / Decoder Stack）
+</p>
+
+<hr>
+
+<h2>Case 2：药物发现管线 — 完全幻觉成通用临床流程</h2>
+
+<h3>输入文本</h3>
+<pre>Our integrated drug discovery pipeline accelerates hit-to-lead optimization through a combination of computational and experimental stages. The pipeline initiates with Target Identification, where disease-associated proteins are prioritized using GWAS summary statistics, gene-disease association data from Open Targets, and protein-protein interaction networks from STRING-db. A druggability assessment filters targets based on the presence of suitable binding pockets identified by Fpocket and the target's membership in the druggable genome. The shortlisted targets proceed to Hit Identification via structure-based virtual screening: a library of 2.4 billion lead-like compounds from the Enamine REAL database is docked against the target's crystal structure or AlphaFold2-predicted model using AutoDock Vina on a GPU cluster, with the top 10,000 compounds by docking score retained. These hits are further filtered by ADMET property prediction using a graph neural network (ChemProp) trained on ChEMBL data, predicting logP, solubility, CYP450 inhibition, and hERG liability. Compounds passing all ADMET filters (about 500) enter the Lead Optimization stage, where Free Energy Perturbation (FEP+) calculations are performed using Schrodinger's FEP+ on 32 A100 GPUs to predict relative binding free energies for proposed chemical modifications. The top 10 optimized leads are synthesized and tested in vitro: biochemical IC50 assays against the purified target protein, cellular target engagement assays using NanoBRET, and cytotoxicity screening in HepG2 cells. Compounds with IC50 < 100 nM and selectivity > 100-fold advance to in vivo pharmacokinetic studies in Sprague-Dawley rats. Finally, a lead candidate meeting all developability criteria is nominated for IND-enabling toxicology studies as the preclinical candidate.</pre>
+
+<h3>评估结果</h3>
+<table class="score-table">
+  <tr><th>结构正确性</th><th>文字准确性</th><th>视觉清晰度</th><th>科学忠实度</th><th>整体质量</th><th>可编辑性</th></tr>
+  <tr><td>1</td><td>2</td><td>9</td><td>0</td><td>2</td><td>9</td></tr>
+</table>
+
+<h3>关键问题</h3>
+<div class="issue"><strong>[HIGH] scientific_error</strong> — 最严重的问题：模型完全忽略输入的具体计算流程，生成了一个通用的临床药物开发管线（Discovery Phase → Phase I–IV 临床试验 → FDA/EMA 审批），而非论文描述的 computation 驱动的 hit-to-lead 优化管线。</div>
+<div class="issue"><strong>[HIGH] missing_entity</strong> — 所有输入中的关键实体均缺失：druggability assessment, Enamine REAL compound library, AutoDock Vina docking, ADMET prediction (ChemProp GNN), FEP+ calculations, in vitro IC50/NanoBRET assays, HepG2 cytotoxicity screening, in vivo PK in rats, LIMS tracking。</div>
+<div class="issue"><strong>[HIGH] wrong_connection</strong> — 流程完全不同：输入描述的是 Target ID → Druggability → Hit ID (virtual screening + docking) → ADMET filter → Lead Optimization (FEP+) → In vitro → In vivo PK → Preclinical candidate；但生成的图显示的是 Target ID → Hit Discovery → Hit-to-Lead → Lead Optimization → Preclinical Testing → Clinical trials。</div>
+<div class="issue"><strong>[MEDIUM] text_accuracy</strong> — 节点标签全是通用术语（"Hit Discovery (HTS/Virtual Screen)", "Hit-to-Lead Optimization"），与输入文本的具体术语完全不匹配。</div>
+
+<h3>输出文件</h3>
+<p>
+  <a href="tc08_output.svg" class="svglink">tc08_output.svg</a> — 生成的 SVG 图 |
+  <a href="tc08_plan.json" class="svglink">tc08_plan.json</a> — 生成的中间 plan JSON<br>
+  生成结果：10 个节点，10 条边，2 个分组（Discovery Phase / Clinical Development Phase）
+</p>
+
+<hr>
+
+<h2>复现环境</h2>
+<table>
+  <tr><th>项目</th><th>值</th></tr>
+  <tr><td>Pipeline</td><td>SciFigurePipeline (AutoFigure)</td></tr>
+  <tr><td>模型</td><td>deepseek-chat</td></tr>
+  <tr><td>max_rounds</td><td>1 (一次 plan + 一次 critique，不 refine)</td></tr>
+  <tr><td>renderer</td><td>SVGRenderer (deterministic, 纯 Python)</td></tr>
+  <tr><td>evaluator</td><td>FigureEvaluator (VLM-as-Judge)</td></tr>
+  <tr><td>结果目录</td><td>autoscifigure_exp/results/full_20260518_002313/</td></tr>
+</table>
+
+</body>
+</html>

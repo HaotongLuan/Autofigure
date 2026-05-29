@@ -1,0 +1,231 @@
+{
+  "title": "Computational Drug Discovery Pipeline",
+  "figure_type": "data_pipeline",
+  "nodes": [
+    {
+      "id": "n1",
+      "label": "Target\nIdentification",
+      "type": "rounded_box",
+      "x": 30,
+      "y": 200,
+      "width": 120,
+      "height": 60,
+      "color": "#dbeafe",
+      "description": "Genomics/proteomics target"
+    },
+    {
+      "id": "n2",
+      "label": "Hit Discovery\n(HTS/Virtual Screen)",
+      "type": "rounded_box",
+      "x": 200,
+      "y": 200,
+      "width": 140,
+      "height": 60,
+      "color": "#dcfce7",
+      "description": "High-throughput screening"
+    },
+    {
+      "id": "n3",
+      "label": "Hit-to-Lead\nOptimization",
+      "type": "rounded_box",
+      "x": 390,
+      "y": 200,
+      "width": 130,
+      "height": 60,
+      "color": "#fef3c7",
+      "description": "Medicinal chemistry"
+    },
+    {
+      "id": "n4",
+      "label": "Lead\nOptimization",
+      "type": "rounded_box",
+      "x": 570,
+      "y": 200,
+      "width": 120,
+      "height": 60,
+      "color": "#f3e8ff",
+      "description": "ADMET optimization"
+    },
+    {
+      "id": "n5",
+      "label": "Preclinical\nTesting",
+      "type": "rounded_box",
+      "x": 740,
+      "y": 200,
+      "width": 120,
+      "height": 60,
+      "color": "#fef2f2",
+      "description": "Animal models"
+    },
+    {
+      "id": "n6",
+      "label": "Phase I\nClinical Trial",
+      "type": "rounded_box",
+      "x": 30,
+      "y": 380,
+      "width": 120,
+      "height": 60,
+      "color": "#e8f4fd",
+      "description": "Safety in healthy volunteers"
+    },
+    {
+      "id": "n7",
+      "label": "Phase II\nClinical Trial",
+      "type": "rounded_box",
+      "x": 200,
+      "y": 380,
+      "width": 120,
+      "height": 60,
+      "color": "#e8f4fd",
+      "description": "Efficacy in patients"
+    },
+    {
+      "id": "n8",
+      "label": "Phase III\nClinical Trial",
+      "type": "rounded_box",
+      "x": 370,
+      "y": 380,
+      "width": 120,
+      "height": 60,
+      "color": "#e8f4fd",
+      "description": "Large-scale RCT"
+    },
+    {
+      "id": "n9",
+      "label": "FDA/EMA\nReview & Approval",
+      "type": "diamond",
+      "x": 555,
+      "y": 370,
+      "width": 140,
+      "height": 80,
+      "color": "#fef3c7",
+      "description": "Regulatory decision"
+    },
+    {
+      "id": "n10",
+      "label": "Phase IV\nPost-Market",
+      "type": "rounded_box",
+      "x": 750,
+      "y": 380,
+      "width": 120,
+      "height": 60,
+      "color": "#dcfce7",
+      "description": "Safety surveillance"
+    }
+  ],
+  "edges": [
+    {
+      "from": "n1",
+      "to": "n2",
+      "label": "",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "n2",
+      "to": "n3",
+      "label": "",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "n3",
+      "to": "n4",
+      "label": "",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "n4",
+      "to": "n5",
+      "label": "",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "n5",
+      "to": "n6",
+      "label": "IND",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "n6",
+      "to": "n7",
+      "label": "",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "n7",
+      "to": "n8",
+      "label": "",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "n8",
+      "to": "n9",
+      "label": "NDA/BLA",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "n9",
+      "to": "n10",
+      "label": "Approved",
+      "style": "solid",
+      "direction": "forward"
+    },
+    {
+      "from": "n9",
+      "to": "n3",
+      "label": "Rejected",
+      "style": "dashed",
+      "direction": "forward"
+    }
+  ],
+  "groups": [
+    {
+      "label": "Discovery Phase",
+      "nodes": [
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "bounds": {
+        "x": 15,
+        "y": 175,
+        "width": 860,
+        "height": 115
+      },
+      "color": "#eff6ff"
+    },
+    {
+      "label": "Clinical Development Phase",
+      "nodes": [
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "bounds": {
+        "x": 15,
+        "y": 355,
+        "width": 870,
+        "height": 115
+      },
+      "color": "#fef2f2"
+    }
+  ],
+  "layout": {
+    "type": "top-down",
+    "spacing": {
+      "horizontal": 40,
+      "vertical": 60
+    }
+  }
+}
